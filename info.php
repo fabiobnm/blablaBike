@@ -100,30 +100,7 @@ if(login_check($mysqli) == true) {
 
                           <input type="submit" value="MODIFICA">
                           </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                     <?php
+                    <?php
 
 
 
