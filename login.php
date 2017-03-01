@@ -1,8 +1,3 @@
-
-
-
-
-
 <?php
 /**
  * Created by PhpStorm
@@ -12,13 +7,7 @@
  */
 
 include 'header.php';
-
-
-
 ?>
-
-
-
 
 <form action="process_login.php" method="post">
     email<br>
@@ -31,12 +20,10 @@ include 'header.php';
   <?php  if(isset($_GET['error'])) {
       $errore = $_GET['error'];
     echo " <h1>$errore</h1>" ;
-    }?>
+  }?>
 
-</form>
+   </form>
 
-
-
-    <a href="singin.php">vuoi iscriverti? singin</a>
+   <a href="singin.php">vuoi iscriverti? singin</a>
 
 

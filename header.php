@@ -1,5 +1,8 @@
 
-
+<?php
+include 'db_connect.php';
+include 'functions.php'
+?>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -23,8 +26,16 @@
                     <img alt="Brand" src="img/blablacar-ridesharing-logo-1.svg">
                 </a>
             </div>
+         <?php
+         sec_session_start();
+         if(login_check($mysqli) == true) {                         ?>
+            <a class="navbar-text navbar-right" href="singin.php">suca</a>
+            <a class="navbar-text navbar-right" href="login.php">ciao</a>
 
+<?php   }else{ ?>
             <a class="navbar-text navbar-right" href="singin.php">vuoi iscriverti? singin</a>
             <a class="navbar-text navbar-right" href="login.php">Login</a>
+       <?php     }  ?>
+
         </div>
     </nav>

@@ -15,11 +15,12 @@ if(isset($_POST['email'], $_POST['password'])) {
     $password = $_POST['password']; // Recupero la password criptata.
 
 
-    if(login($email, $password, $mysqli) == true) {
+   if(login($email, $password, $mysqli) == true) {
         // Login eseguito
-        echo 'Success: sei loggato!';
+        //echo 'Success: sei loggato!';
+        header("location: /utente.php");
      ?>
-        <a href="info.php">inserisci info</a>
+
 
 <?php
     } else {
