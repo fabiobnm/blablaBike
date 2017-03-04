@@ -16,15 +16,9 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'])) {
 
     if(singin($email, $password,$nickname, $mysqli) == true) {
         // singin eseguito
-        echo 'Success: sei iscritto!';
-
-        echo 'inserisci info:';
-?>
+        header("location: /utente.php");
 
 
-        <a href="info.php">info</a>
-
-<?php
     } else {
         echo 'errore';
 

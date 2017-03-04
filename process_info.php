@@ -9,12 +9,13 @@ include 'db_connect.php';
 include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
 if(isset($_POST['nickname'], $_POST['nome'],$_POST['cognome'], $_POST['dataNascita'],
-    $_POST['luogoNascita'], $_POST['sesso'],$_POST['residenza'], $_POST['esperienza'])) {
+    $_POST['luogoNascita'],$_POST['sesso'],$_POST['residenza'], $_POST['esperienza'])) {
     $nickname = $_POST['nickname'];
     $nome = $_POST['nome'];
     $cognome= $_POST['cognome'];
     $dataNascita = $_POST['dataNascita'];
     $luogoNascita = $_POST['luogoNascita'];
+
     $sesso = $_POST['sesso'];
     $residenza = $_POST['residenza'];
     $esperienza = $_POST['esperienza'];// Recupero la password criptata.

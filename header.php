@@ -22,15 +22,28 @@ include 'functions.php'
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="login.php">
+                <?php
+                sec_session_start();
+                if(login_check($mysqli) == true) {     ?>
+
+
+                <a class="navbar-brand" href="utente.php">
                     <img alt="Brand" src="img/blablacar-ridesharing-logo-1.svg">
                 </a>
+
+                <?php  }  else {  ?>
+                    <a class="navbar-brand" href="index.php">
+                        <img alt="Brand" src="img/blablacar-ridesharing-logo-1.svg">
+                    </a>
+
+
+              <?php  } ?>
             </div>
          <?php
          sec_session_start();
          if(login_check($mysqli) == true) {                         ?>
-            <a class="navbar-text navbar-right" href="singin.php">suca</a>
-            <a class="navbar-text navbar-right" href="login.php">ciao</a>
+            <a class="navbar-text navbar-right" href="logout.php">Logout</a>
+            <a class="navbar-text navbar-right" href="profilo.php"><?php echo 'Profilo ',$_SESSION['nikname'];?></a>
 
 <?php   }else{ ?>
             <a class="navbar-text navbar-right" href="singin.php">vuoi iscriverti? singin</a>

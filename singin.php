@@ -22,11 +22,13 @@ if(login_check($mysqli) == true) {
 
         <form action="process_singin.php" method="post">
 
-        Indirizzo e-mail<br> <input type="text" name="email"><br>
-        Nicknameeeeeeeeeeeeeee<br><input type="text" name="nickname" ><br>
-    Password <br> <input type="password" name="password"><br>
+            <label>Nickname</label><br><input type="text" name="nickname" ><br>
+            <label>Indirizzo e-mail</label><br> <input type="text" name="email"><br>
+            <label>Password</label> <br> <input type="password" name="password"><br>
             <br>
     <input style="background: lemonchiffon" type="submit"value="ISCRIVITI">
+
+
 </form>
 
 

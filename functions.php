@@ -56,7 +56,29 @@ function updateinfo($nickname,$nome,$cognome,$dataNascita,$luogoNascita,$sesso,$
     return true;
 
 }
+function insertbike($proprietario,$nome,$tipo,$peso,$ruote,$marca,$annoFab,$annoAcq,$colore,$mysqli){
 
+    $stmt = $mysqli->prepare("INSERT INTO bicicletta (proprietario,nome,tipo,peso,ruote,marca,annoFab,annoAcq,
+     colore)VALUES(?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('ssiiiisss',$proprietario,$nome, $tipo,$peso,$ruote, $marca,$annoFab,$annoAcq,$colore);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+function creauscita($organizzatore,$titolo,$distanza,$dislivello,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,$visibile,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO uscita (organizzatore,titolo,distanza,dislivello,tipologia,
+      difficolta,note,luogo,dataIncontro,oraIncontro,visibile)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('ssiiiissssi',$organizzatore,$titolo, $distanza,$dislivello,$tipologia,
+        $difficolta,$note,$luogo,$dataIncontro,$oraIncontro,$visibile);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
 
 function info($nickname,$nome,$cognome,$dataNascita,$luogoNascita,$sesso,$residenza,$esperienza,$mysqli){
 
@@ -69,11 +91,53 @@ function info($nickname,$nome,$cognome,$dataNascita,$luogoNascita,$sesso,$reside
  return true;
 
 }
-function ricercautenti($nickname,$mysqli){
-    if($stmt = $mysqli->prepare("SELECT nickname FROM utente WHERE nickname= ? LIMIT 1")){
-        $stmt->bind_param('s', $nickname);
+
+function nickEsiste($nickname,$mysqli){
+
+    $stmt = $mysqli->prepare("SELECT nickname FROM utente WHERE nickname = ? LIMIT 1");
+    $stmt->bind_param('s',$nickname);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+
+
+function square($ricercautente,$mysqli)
+{
+
+        //$stmt->bind_param('s', $ricercautente);
+         // recupera il risultato della query e lo memorizza nelle relative variabili.
+        $stmt = $mysqli->prepare("SELECT email FROM utente WHERE nickname = 'lullo' LIMIT 1");
+
         $stmt->execute();
-        $stmt->close();
+        $results=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        $json=json_encode($results);
+
+        return $json;
+
+
+
+}
+
+function ricercautente($ricercautente,$mysqli){
+    if($stmt = $mysqli->prepare("SELECT email FROM utente WHERE nickname LIKE '%arotin%'")){
+        //$stmt->bind_param('s', $ricercautente);
+        $stmt->execute();
+        $stmt->store_result();
+        //$stmt->bind_result($email); // recupera il risultato della query e lo memorizza nelle relative variabili.
+        $stmt->fetch();
+
+        if($stmt->num_rows != 0){
+            $json = array();
+            while($row =mysqli_fetch_assoc($stmt))
+            {
+                $emparray[] = $row;
+            }
+           return json_encode($emparray);
+        } else
+            { return false;}
 
 
     }
