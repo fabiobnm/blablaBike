@@ -98,8 +98,30 @@ function nickEsiste($nickname,$mysqli){
     $stmt->bind_param('s',$nickname);
 
     $stmt->execute();
-    $stmt->close();
-    return true;
+    $stmt->store_result();
+    $stmt->fetch();
+
+    if($stmt->num_rows == 1){
+
+
+        return true;}
+
+
+}
+
+function emailEsiste($email,$mysqli){
+
+    $stmt = $mysqli->prepare("SELECT email FROM utente WHERE email = ? LIMIT 1 ");
+    $stmt->bind_param('s',$email);
+
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->fetch();
+
+    if($stmt->num_rows == 1){
+
+
+    return true;}
 
 }
 

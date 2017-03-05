@@ -83,9 +83,9 @@ if(login_check($mysqli) == true) {
                           <h1>non hai inserito info</h1>
                          <form action="process_info.php" method="post">
                              nickname:<input type= "text" value="<?php echo $nickname ?>" name="nickname" readonly><br>
-                         nome: <input type="text" value="<?php echo $nome ?>"name="nome"><br>
-                         cognome: <input type="text"  value="<?php echo $cognome ?>" name="cognome"><br>
-                             dataNascita: <input type="date" name="dataNascita"><br>
+                         nome: <input type="text" name="nome"><br>
+                         cognome: <input type="text"  name="cognome"><br>
+                             dataNascita: <input type="date" name="dataNascita "><br>
                              luogoNascita: <input type="text" name="luogoNascita"><br>
                              sesso: <label class="radio-inline">
                                      <input type="radio" name="sesso" id="inlineRadio1" value=1> UOMO

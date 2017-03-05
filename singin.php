@@ -20,7 +20,7 @@ if(login_check($mysqli) == true) {
 
 
 
-        <form action="process_singin.php" method="post">
+        <form action="processSingProva.php" method="post">
 
             <label>Nickname</label><br><input type="text" name="nickname" ><br>
             <label>Indirizzo e-mail</label><br> <input type="text" name="email"><br>
@@ -28,7 +28,10 @@ if(login_check($mysqli) == true) {
             <br>
     <input style="background: lemonchiffon" type="submit"value="ISCRIVITI">
 
-
+            <?php  if(isset($_GET['error'])) {
+                $errore = $_GET['error'];
+                echo " <h1>$errore</h1>" ;
+            }?>
 </form>
 
 

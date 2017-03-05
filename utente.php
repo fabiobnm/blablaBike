@@ -31,6 +31,11 @@ if(login_check($mysqli) == true) {
     <form action="process_info.php" method="post">
         cerca uscite dove vuoi<input type="search"><input type="submit">
     </form>
+
+    <?php  if(isset($_GET['error'])) {
+        $errore = $_GET['error'];
+        echo " <h1>$errore</h1>" ;
+    }?>
 <?php
 
 } else {

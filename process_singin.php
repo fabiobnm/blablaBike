@@ -18,7 +18,12 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'])) {
         // singin eseguito
         header("location: /utente.php");
 
+?>
 
+
+        <a href="info.php">info</a>
+
+<?php
     } else {
         echo 'errore';
 

@@ -8,7 +8,7 @@ if(login_check($mysqli) == true) {
 
     $nickname = $_SESSION['nikname'];
 
-
+echo '<h1>inserisci bike</h1>'
 ?>
     <form action="procces_insertbike.php" method="post">
 
