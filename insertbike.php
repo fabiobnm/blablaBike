@@ -21,6 +21,7 @@ echo '<h1>inserisci bike</h1>'
             <input type="radio" name="tipo" id="inlineRadio2" value=0> mountain
         </label><br>
         <label>marca</label> <br><input type="text" name="marca" ><br>
+        <label>modello</label> <br><input type="text" name="modello" ><br>
         <label>peso</label> <br><input type="number" name="peso" ><br>
         <label>ruote</label> <br><label class="radio-inline">
             <input type="radio" name="ruote" id="inlineRadio1" value=0> unknow

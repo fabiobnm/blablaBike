@@ -7,12 +7,13 @@
  */
 include 'db_connect.php';
 include 'functions.php';
+
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
 if(isset($_POST['ricercautente'])) {
-    $ricercautente = $_POST['ricercautente'];
+    $ricercautente = strtoupper($_POST['ricercautente']);
 
 
-    echo "ok fino qui tutto uiui";
+
 
    /* $stmt = $mysqli->query("SELECT * FROM utente WHERE nickname LIKE '%c%'");
     //$data = $stmt->fetch_array(PDO::FETCH_ASSOC);
@@ -22,13 +23,19 @@ if(isset($_POST['ricercautente'])) {
     echo $json; */
 
 
-    $stmt = $mysqli->query("SELECT * FROM utente WHERE nickname LIKE '%c%'");
-    $stmt->execute();
-    $stmt->store_result();
-    $stmt->bind_result($email); // recupera il risultato della query e lo memorizza nelle relative variabili.
-    $stmt->fetch();
+    $query="SELECT * FROM utente WHERE nickname LIKE '%$ricercautente%' ";
+    $result=mysqli_query($mysqli,$query);
 
 
+
+
+    while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+
+        echo $row['email'];
+        echo ' ';
+       ?> <a href="profilo.php?profilo=<?php echo $row['nickname'];?>"><?php echo $row['nickname'];?></a>
+         <br><?php
+    }
 
 
 

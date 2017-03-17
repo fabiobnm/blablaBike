@@ -23,11 +23,11 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
 
                 header("location: /utente.php?error=eri gia registrato");
             } else
-                header("location: /signin.php?error=email gia esistente");
+                header("location: /singin.php?error=email gia esistente");
 
         }else  { if(nickEsiste($nickname,$mysqli)==true){
 
-            header("location: /signin.php?error=nickname gia usato");
+            header("location: /singin.php?error=nickname gia usato");
         }
 
         else{
@@ -36,14 +36,14 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
                 header("location: /utente.php?error=ti sei registrato può inserire informazione");
             }
             else
-                header("location: /signin.php?error=probblemi");
+                header("location: /singin.php?error=probblemi");
 
 
         }}
 
 
 
-    }else  header("location: /signin.php?error=conferma password sbagliata");
+    }else  header("location: /singin.php?error=conferma password sbagliata");
 
 
 } else

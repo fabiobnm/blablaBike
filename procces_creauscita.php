@@ -10,14 +10,14 @@ include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
 if(isset($_POST['organizzatore'], $_POST['titolo'],$_POST['distanza'], $_POST['dislivello'],
     $_POST['tipologia'],$_POST['difficolta'],$_POST['note'], $_POST['luogo'], $_POST['dataIncontro'], $_POST['oraIncontro'],$_POST['visibile'])) {
-    $organizzatore = $_POST['organizzatore'];
-    $titolo = $_POST['titolo'];
+    $organizzatore = strtoupper($_POST['organizzatore']);
+    $titolo = strtoupper($_POST['titolo']);
     $distanza= $_POST['distanza'];
     $dislivello = $_POST['dislivello'];
     $tipologia = $_POST['tipologia'];
     $difficolta = $_POST['difficolta'];
     $note = $_POST['note'];
-    $luogo = $_POST['luogo'];
+    $luogo = strtoupper($_POST['luogo']);
     $dataIncontro=$_POST['dataIncontro'];
     $oraIncontro= $_POST['oraIncontro'];
     $visibile = $_POST['visibile'];// Recupero la password criptata.
@@ -27,7 +27,7 @@ if(isset($_POST['organizzatore'], $_POST['titolo'],$_POST['distanza'], $_POST['d
     if(creauscita($organizzatore,$titolo,$distanza,$dislivello,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,
             $visibile,$mysqli) == true) {
         // Login eseguito
-        header("location: /profilo.php", 'hai modificato');
+        header("location: /profilo.php?messaggio=hai creato una nuova uscita");
     } else {
         echo 'pollo';
 

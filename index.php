@@ -14,7 +14,7 @@ include 'header.php';
 <h3>pedala per restare in  equilibrio</h3>
 <a href="phpinfo.php">PHP info</a>
 <a href="login.php">Login</a>
-<a href="singin.php">Singin</a><br>
+<a href="signin.php">Singin</a><br>
     <form action="process_info.php" method="post">
     cerca uscite dove vuoi<input type="search"><input type="submit">
     </form>

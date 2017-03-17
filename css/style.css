@@ -1,4 +1,6 @@
-h1 {font-size: 190px}
+h1 {font-size: 190px; }
 .navbar-brand img {width: 152px }
 .navbar-brand{padding: 12px 12px}
 .navbar-right{margin-right: 5px}
+.chat{background: deepskyblue ;border-radius: 40px ;text-align: center}
+.culo{background: #EF53B5 ;border-radius: 40px }

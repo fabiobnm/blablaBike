@@ -21,9 +21,13 @@ include 'header.php';
       $errore = $_GET['error'];
     echo " <h1>$errore</h1>" ;
   }?>
+    <?php  if(isset($_GET['messaggio'])) {
+        $messaggio = $_GET['messaggio'];
+        echo " <h1>$messaggio</h1>" ;
+    }?>
 
    </form>
 
-   <a href="singin.php">vuoi iscriverti? singin</a>
+   <a href="signin.php">vuoi iscriverti? singin</a>
 
 

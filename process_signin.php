@@ -10,9 +10,9 @@ include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
 if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpassword']))
 {
-    $email = $_POST['email'];
+    $email = strtolower($_POST['email']);
     $password = $_POST['password'];
-    $nickname = $_POST['nickname'];// Recupero la password criptata.
+    $nickname = strtoupper($_POST['nickname']);// Recupero la password criptata.
     $confpassword= $_POST['confpassword'];
     if($password==$confpassword)
     {
@@ -21,7 +21,7 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
             if (login($email, $password, $mysqli) == true)
             {
 
-                header("location: /utente.php?error=eri gia registrato");
+                header("location: /utente.php?messaggio=eri gia registrato");
             } else
                 header("location: /signin.php?error=email gia esistente");
 
@@ -33,7 +33,7 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
         else{
             if(singin($email, $password, $nickname, $mysqli)==true){
 
-                header("location: /utente.php?error=ti sei registrato può inserire informazione");
+                header("location: /utente.php?messaggio=ti sei registrato può inserire informazione");
             }
             else
                 header("location: /signin.php?error=probblemi");

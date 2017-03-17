@@ -14,12 +14,12 @@ include 'functions.php'
 
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 
-<html><body >
+<html><body  >
 <div class="container">
 
 
 
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" >
         <div class="container-fluid">
             <div class="navbar-header">
                 <?php
@@ -41,13 +41,32 @@ include 'functions.php'
             </div>
          <?php
          sec_session_start();
-         if(login_check($mysqli) == true) {                         ?>
+         if(login_check($mysqli) == true) {
+
+
+             $utente=$_SESSION['nikname'];
+             $amici="SELECT approvato as amici FROM segue WHERE seguitoDa='$utente' && approvato=0 ";
+             $amicizia = mysqli_query($mysqli, $amici);
+             $follow = mysqli_fetch_array($amicizia, MYSQLI_ASSOC);
+
+
+
+
+
+             ?>
             <a class="navbar-text navbar-right" href="logout.php">Logout</a>
             <a class="navbar-text navbar-right" href="profilo.php"><?php echo 'Profilo ',$_SESSION['nikname'];?></a>
+             <a class="navbar-text navbar-right" style="color: gold" href="mercatino.php">MERCATINO</a>
 
-<?php   }else{ ?>
-            <a class="navbar-text navbar-right" href="singin.php">vuoi iscriverti? singin</a>
+             <?php if(isset($follow['amici'])==true && $follow['amici']==0){
+               ?>  <a class="navbar-text navbar-right" href="visualizzaRichieste.php" style="color: red">RICHIESTA </a>
+
+
+
+<?php  } }else{ ?>
+            <a class="navbar-text navbar-right" href="signin.php">vuoi iscriverti? signin</a>
             <a class="navbar-text navbar-right" href="login.php">Login</a>
+             <a class="navbar-text navbar-right" style="color: gold; font: bold"  href="mercatino.php">MERCATINO</a>
        <?php     }  ?>
 
         </div>

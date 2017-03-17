@@ -8,23 +8,25 @@
 include 'db_connect.php';
 include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
-if(isset($_POST['proprietario'], $_POST['nome'],$_POST['tipo'], $_POST['peso'],
-    $_POST['ruote'],$_POST['marca'],$_POST['annoFab'], $_POST['annoAcq'],$_POST['colore'])) {
-    $proprietario = $_POST['proprietario'];
-    $nome = $_POST['nome'];
+if(isset($_POST['proprietario'], $_POST['nome'],$_POST['tipo'],$_POST['marca'],$_POST['modello'], $_POST['peso'],
+    $_POST['ruote'],$_POST['annoFab'], $_POST['annoAcq'],$_POST['colore'])) {
+    $proprietario = strtoupper($_POST['proprietario']);
+    $nome = strtoupper($_POST['nome']);
     $tipo= $_POST['tipo'];
+    $marca = strtoupper($_POST['marca']);
+    $modello = strtoupper($_POST['modello']);
     $peso = $_POST['peso'];
     $ruote = $_POST['ruote'];
-    $marca = $_POST['marca'];
     $annoFab = $_POST['annoFab'];
     $annoAcq = $_POST['annoAcq'];
     $colore = $_POST['colore'];// Recupero la password criptata.
 
 
+
     echo "ok fino qui tutto bene";
-    if(insertbike($proprietario,$nome,$tipo,$peso,$ruote,$marca,$annoFab,$annoAcq,$colore,$mysqli) == true) {
+    if(insertbike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli) == true) {
         // Login eseguito
-        header("location: /profilo.php", 'hai modificato');
+        header("location: /garage.php?messaggio=hai inserito una bike");
     } else {
         echo 'pollo';
 

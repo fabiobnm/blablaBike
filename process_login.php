@@ -11,14 +11,14 @@ sec_session_start(); // usiamo la nostra funzione per avviare una sessione php s
 
 
 if(isset($_POST['email'], $_POST['password'])) {
-    $email = $_POST['email'];
+    $email = strtolower($_POST['email']);
     $password = $_POST['password']; // Recupero la password criptata.
 
 
    if(login($email, $password, $mysqli) == true) {
         // Login eseguito
         //echo 'Success: sei loggato!';
-        header("location: /utente.php?error=sei entrato");
+        header("location: /utente.php?messaggio=sei entrato");
      ?>
 
 
@@ -31,7 +31,7 @@ if(isset($_POST['email'], $_POST['password'])) {
 
 
         ?>
-<a href="singin.php">iscriviti</a>
+<a href="signin.php">iscriviti</a>
 
 <?php
 

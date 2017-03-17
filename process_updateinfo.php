@@ -22,6 +22,7 @@ if(isset($_POST['nickname'], $_POST['nome'],$_POST['cognome'], $_POST['dataNasci
     echo "ok fino qui tutto bene";
     if(updateinfo($nickname,$nome,$cognome,$dataNascita,$luogoNascita,$sesso,$residenza,$esperienza,$mysqli) == true)  {
         // Login eseguito
+        header("location: /utente.php?messaggio=hai modificato le tue info");
         echo 'Hai modificato i tuoi dati!';
     } else {
         echo 'pollo';

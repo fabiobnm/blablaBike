@@ -39,6 +39,33 @@ function singin($email, $password, $nickname, $mysqli) {
 
 
 }
+function eliminaBike($utente,$bike,$mysqli){
+
+    $stmt = $mysqli->prepare("DELETE FROM  bicicletta WHERE proprietario='$utente' && ID='$bike' ");
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+}
+
+function accettaRichiesta($utente,$seguitoDa,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE segue SET approvato = 1
+     
+    WHERE utente='$seguitoDa' && seguitoDa='$utente'");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+
+
+}
+
+
 function updateinfo($nickname,$nome,$cognome,$dataNascita,$luogoNascita,$sesso,$residenza,$esperienza,$mysqli){
 
     echo "<br>";
@@ -56,17 +83,56 @@ function updateinfo($nickname,$nome,$cognome,$dataNascita,$luogoNascita,$sesso,$
     return true;
 
 }
-function insertbike($proprietario,$nome,$tipo,$peso,$ruote,$marca,$annoFab,$annoAcq,$colore,$mysqli){
+function inserisciCommento($testo,$nickname,$annuncio,$mysqli){
 
-    $stmt = $mysqli->prepare("INSERT INTO bicicletta (proprietario,nome,tipo,peso,ruote,marca,annoFab,annoAcq,
-     colore)VALUES(?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param('ssiiiisss',$proprietario,$nome, $tipo,$peso,$ruote, $marca,$annoFab,$annoAcq,$colore);
+    $stmt = $mysqli->prepare("INSERT INTO commento (testo,utente,annuncio)VALUES(?,?,?)");
+    $stmt->bind_param('ssi',$testo,$nickname,$annuncio);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+
+
+}
+function creaAnnuncio($titolo,$bicicletta,$venditore,$prezzo,$descrizione,$mysqli){
+
+
+    $stmt = $mysqli->prepare("INSERT INTO annuncio (titolo,bicicletta,venditore,prezzo,descrizione)
+VALUES(?,?,?,?,?)");
+    $stmt->bind_param('sisis',$titolo,$bicicletta, $venditore,$prezzo,$descrizione);
 
     $stmt->execute();
     $stmt->close();
     return true;
 
 }
+
+
+
+function insertbike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO bicicletta (proprietario,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,
+     colore)VALUES(?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('ssissiisss',$proprietario,$nome, $tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+function follow($utente,$seguitoDa,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO segue (utente,seguitoDa)VALUES(?,?)");
+    $stmt->bind_param('ss',$utente,$seguitoDa);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+
 function creauscita($organizzatore,$titolo,$distanza,$dislivello,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,$visibile,$mysqli){
 
     $stmt = $mysqli->prepare("INSERT INTO uscita (organizzatore,titolo,distanza,dislivello,tipologia,

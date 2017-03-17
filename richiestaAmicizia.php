@@ -8,24 +8,18 @@
 include 'db_connect.php';
 include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
-if(isset($_POST['email'], $_POST['password'],$_POST['nickname'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $nickname = $_POST['nickname'];// Recupero la password criptata.
+if(isset($_SESSION['nikname'], $_GET['profilo'])) {
+    $utente = $_SESSION['nikname'];
+    $seguitoDa = $_GET['profilo'];
 
 
-    if(singin($email, $password,$nickname, $mysqli) == true) {
-        // singin eseguito
-        header("location: /utente.php");
 
-?>
-
-
-        <a href="info.php">info</a>
-
-<?php
+    echo "ok fino qui tutto bene";
+    if(follow($utente,$seguitoDa,$mysqli) == true) {
+        // Login eseguito
+        header("location: /profilo.php?profilo=$seguitoDa&messaggio=richiesta inviata");
     } else {
-        echo 'errore';
+        echo 'pollo';
 
 
         // Login fallito
