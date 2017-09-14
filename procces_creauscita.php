@@ -8,12 +8,13 @@
 include 'db_connect.php';
 include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
-if(isset($_POST['organizzatore'], $_POST['titolo'],$_POST['distanza'], $_POST['dislivello'],
+if(isset($_POST['organizzatore'], $_POST['titolo'],$_POST['distanza'], $_POST['dislivello'],$_POST['durata'],
     $_POST['tipologia'],$_POST['difficolta'],$_POST['note'], $_POST['luogo'], $_POST['dataIncontro'], $_POST['oraIncontro'],$_POST['visibile'])) {
     $organizzatore = strtoupper($_POST['organizzatore']);
     $titolo = strtoupper($_POST['titolo']);
     $distanza= $_POST['distanza'];
     $dislivello = $_POST['dislivello'];
+    $durata=$_POST['durata'];
     $tipologia = $_POST['tipologia'];
     $difficolta = $_POST['difficolta'];
     $note = $_POST['note'];
@@ -24,10 +25,16 @@ if(isset($_POST['organizzatore'], $_POST['titolo'],$_POST['distanza'], $_POST['d
 
 
     echo "ok fino qui tutto bene";
-    if(creauscita($organizzatore,$titolo,$distanza,$dislivello,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,
+    if(creauscita($organizzatore,$titolo,$distanza,$dislivello,$durata,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,
             $visibile,$mysqli) == true) {
-        // Login eseguito
-        header("location: /profilo.php?messaggio=hai creato una nuova uscita");
+
+        $iduscita="SELECT ID from uscita WHERE organizzatore='$organizzatore' AND titolo='$titolo' AND
+          distanza=$distanza AND dislivello=$dislivello";
+        $risultatouscita=mysqli_query($mysqli, $iduscita);
+        $uscitaID=mysqli_fetch_array($risultatouscita,MYSQLI_ASSOC);
+        $ID=$uscitaID['ID'];
+
+        header("location: /tappe.php?uscita=$ID");
     } else {
         echo 'pollo';
 

@@ -11,6 +11,12 @@ sec_session_start();
 
 $annuncio=$_GET['IDannuncio'];
 
+$queryS = "SELECT count(*) AS conto FROM annuncio WHERE IDannuncio=$annuncio";
+$resultS = mysqli_query($mysqli, $queryS);
+$rowS = mysqli_fetch_array($resultS, MYSQLI_ASSOC);
+
+if($rowS['conto']>=1) {
+
 $query = "SELECT * FROM commento WHERE annuncio='$annuncio'";
 $result = mysqli_query($mysqli, $query);
 echo 'commenti annuncio N°';
@@ -49,8 +55,8 @@ while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
 
 <form action="inserisciCommento.php" method="post">
-Inserisci un commento: <input type="text" name="testo">
+Inserisci un commento: <input type="text" name="testo" required>
         <input type="hidden" value="<?php echo $annuncio;?>" name="annuncio">
     <input type="submit"style="background: deeppink;color: gold;   border-radius: 20px" value="INVIA">
 
-</form>
+</form> <?php } else echo '<h1 style="color: red">annuncio non trovato</h1>';

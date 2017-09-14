@@ -17,6 +17,23 @@ function sec_session_start() {
     session_start(); // Avvia la sessione php.
     session_regenerate_id(); // Rigenera la sessione e cancella quella creata in precedenza.
 }
+function creafiltri($nickname,$mysqli){
+    $stmt = $mysqli->prepare("INSERT INTO filtromercatino (nickname)VALUES(?)");
+    $stmt->bind_param('s',$nickname);
+
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $mysqli->prepare("INSERT INTO filtrouscite (nickname)VALUES(?)");
+    $stmt->bind_param('s',$nickname);
+
+    $stmt->execute();
+    $stmt->close();
+
+ return true;
+
+
+}
 function singin($email, $password, $nickname, $mysqli) {
 
     $stmt = $mysqli->prepare("INSERT INTO utente (nickname,email,password)VALUES(?,?,?)");
@@ -39,9 +56,31 @@ function singin($email, $password, $nickname, $mysqli) {
 
 
 }
-function eliminaBike($utente,$bike,$mysqli){
+function rifiutaAmicizia($utente,$nickname,$mysqli){
+    $stmt = $mysqli->prepare("DELETE FROM  segue WHERE utente='$utente' && seguitoDa='$nickname' ");
+    $stmt->execute();
+    $stmt->close();
+    return true;
 
-    $stmt = $mysqli->prepare("DELETE FROM  bicicletta WHERE proprietario='$utente' && ID='$bike' ");
+}
+function rifiutaAcquisto($annuncio,$utente,$mysqli){
+    $stmt = $mysqli->prepare("DELETE FROM  richiestaacquisto WHERE annuncio='$annuncio' && utente='$utente' ");
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+function cancellaAnnuncio($utente,$annuncio,$mysqli){
+
+    $stmt = $mysqli->prepare("DELETE FROM  annuncio WHERE  IDannuncio='$annuncio' ");
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+function eliminaUSCITA($utente,$uscita,$mysqli){
+
+    $stmt = $mysqli->prepare("DELETE FROM  uscita WHERE  ID=$uscita AND organizzatore='$utente'");
     $stmt->execute();
     $stmt->close();
     return true;
@@ -49,11 +88,26 @@ function eliminaBike($utente,$bike,$mysqli){
 
 }
 
+function eliminaBike($utente,$bike,$mysqli){
+
+    $stmt = $mysqli->prepare("DELETE FROM  bicicletta WHERE  ID='$bike' and proprietario='$utente'");
+
+    if ( $stmt->execute() ){
+        $stmt->close();
+        return true;
+    }else{
+        $stmt->close();
+        return false;
+    }
+
+
+
+}
+
 function accettaRichiesta($utente,$seguitoDa,$mysqli){
 
-    $stmt = $mysqli->prepare("UPDATE segue SET approvato = 1
-     
-    WHERE utente='$seguitoDa' && seguitoDa='$utente'");
+    $stmt = $mysqli->prepare("UPDATE segue SET approvato = 1, data= CURRENT_DATE 
+     WHERE utente='$seguitoDa' && seguitoDa='$utente'");
     //$stmt->bind_param('s', $_SESSION['nickname']);
 
     $stmt->execute();
@@ -63,6 +117,62 @@ function accettaRichiesta($utente,$seguitoDa,$mysqli){
 
 
 
+}
+function fineUscita($uscita,$utente,$mysqli){
+    $stmt = $mysqli->prepare("UPDATE uscita SET fine=1
+     WHERE organizzatore='$utente' && ID=$uscita");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+}
+function modificaVisibilita($uscita,$visibile,$organizzatore,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE uscita SET visibile='$visibile'
+     WHERE organizzatore='$organizzatore' && ID=$uscita");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+}
+function valutaUscita($uscita,$utente,$valutazione,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE partecipa SET valutazione='$valutazione'
+     WHERE utente='$utente' && uscita=$uscita");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+}
+function updatebike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE bicicletta SET tipo='$tipo',marca='$marca',modello='$modello',peso='$peso',ruote='$ruote',
+      annoFab='$annoFab',annoAcq='$annoAcq',colore='$colore'
+      WHERE nome='$nome' AND proprietario='$proprietario'");
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+}
+function pubblicaUscita($nickname,$uscita,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE uscita SET nascosto=1
+     
+    WHERE ID=$uscita AND organizzatore='$nickname'");
+
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
 }
 
 
@@ -108,20 +218,102 @@ VALUES(?,?,?,?,?)");
     return true;
 
 }
+function partecipaUscita($partecipante,$bicicletta,$uscita,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO partecipa (uscita,bicicletta,utente)VALUES(?,?,?)");
+    $stmt->bind_param('iis',$uscita,$bicicletta, $partecipante);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+}
+
+function creaTappa($numero,$uscita,$nome,$luogo,$lunghezza,$tipo,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO tappa (numero,uscita,luogo,nome,tipo,lunghezza)
+     VALUES(?,?,?,?,?,?)");
+    $stmt->bind_param('iissii',$numero,$uscita,$luogo, $nome,$tipo,$lunghezza);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+}
+function inserisciFiltroUscite($nickname,$filtroQuery,$testofiltro,$mysqli){
+    $stmt = $mysqli->prepare("UPDATE filtrouscite SET query='$filtroQuery', testo='$testofiltro'
+     WHERE nickname='$nickname'");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
 
 
 
-function insertbike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+}
 
-    $stmt = $mysqli->prepare("INSERT INTO bicicletta (proprietario,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,
-     colore)VALUES(?,?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param('ssissiisss',$proprietario,$nome, $tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore);
+function inserisciFiltroMercatino($nickname,$filtroQuery,$testofiltro,$mysqli){
+    $stmt = $mysqli->prepare("UPDATE filtromercatino SET query='$filtroQuery', testo='$testofiltro'
+     WHERE nickname='$nickname'");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+
+}
+
+function filtraMercatino($nickname,$tipo,$marca,$colore,$annoFabmin,$annoFabmax,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE foltroMercatino SET tipo=$tipo,marca='$marca',colore='$colore',annoFabmin=$annoFabmin,
+    annoFabmax=$annoFabmax
+     WHERE nickname='$nickname'");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
 
     $stmt->execute();
     $stmt->close();
     return true;
 
 }
+function bikeVenduta($proprietario,$ID,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO biciclettevendute (proprietario,ID,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,
+     colore)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('sisissdisss',$proprietario,$ID,$nome, $tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+
+
+function insertbike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO bicicletta (proprietario,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,
+     colore)VALUES(?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('ssissdisss',$proprietario,$nome, $tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+function acquistoRichiesta($annuncio,$utente,$mysqli){
+
+    $stmt = $mysqli->prepare("INSERT INTO richiestaacquisto (annuncio,utente)VALUES(?,?)");
+    $stmt->bind_param('is',$annuncio,$utente);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
+}
+
 function follow($utente,$seguitoDa,$mysqli){
 
     $stmt = $mysqli->prepare("INSERT INTO segue (utente,seguitoDa)VALUES(?,?)");
@@ -133,11 +325,11 @@ function follow($utente,$seguitoDa,$mysqli){
 
 }
 
-function creauscita($organizzatore,$titolo,$distanza,$dislivello,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,$visibile,$mysqli){
+function creauscita($organizzatore,$titolo,$distanza,$dislivello,$durata,$tipologia,$difficolta,$note,$luogo,$dataIncontro,$oraIncontro,$visibile,$mysqli){
 
-    $stmt = $mysqli->prepare("INSERT INTO uscita (organizzatore,titolo,distanza,dislivello,tipologia,
-      difficolta,note,luogo,dataIncontro,oraIncontro,visibile)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param('ssiiiissssi',$organizzatore,$titolo, $distanza,$dislivello,$tipologia,
+    $stmt = $mysqli->prepare("INSERT INTO uscita (organizzatore,titolo,distanza,dislivello,durata,tipologia,
+      difficolta,note,luogo,dataIncontro,oraIncontro,visibile)VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('ssiiiisssssi',$organizzatore,$titolo, $distanza,$dislivello,$durata,$tipologia,
         $difficolta,$note,$luogo,$dataIncontro,$oraIncontro,$visibile);
 
     $stmt->execute();

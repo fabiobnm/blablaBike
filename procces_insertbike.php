@@ -8,12 +8,15 @@
 include 'db_connect.php';
 include 'functions.php';
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
-if(isset($_POST['proprietario'], $_POST['nome'],$_POST['tipo'],$_POST['marca'],$_POST['modello'], $_POST['peso'],
-    $_POST['ruote'],$_POST['annoFab'], $_POST['annoAcq'],$_POST['colore'])) {
+if(isset($_POST['proprietario'], $_POST['nome'],$_POST['tipo'],$_POST['marca'],$_POST['newmarca'],$_POST['modello'],
+    $_POST['annoFab'], $_POST['annoAcq'],$_POST['colore'])) {
     $proprietario = strtoupper($_POST['proprietario']);
     $nome = strtoupper($_POST['nome']);
     $tipo= $_POST['tipo'];
-    $marca = strtoupper($_POST['marca']);
+    if($_POST['newmarca']!=''){
+        $marca =strtoupper($_POST['newmarca']);
+    }else{
+    $marca = $_POST['marca'];}
     $modello = strtoupper($_POST['modello']);
     $peso = $_POST['peso'];
     $ruote = $_POST['ruote'];
@@ -24,6 +27,7 @@ if(isset($_POST['proprietario'], $_POST['nome'],$_POST['tipo'],$_POST['marca'],$
 
 
     echo "ok fino qui tutto bene";
+
     if(insertbike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli) == true) {
         // Login eseguito
         header("location: /garage.php?messaggio=hai inserito una bike");

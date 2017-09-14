@@ -43,5 +43,5 @@ if(login_check($mysqli) == true) {
 
 } else {
 
-    echo suca;
+    echo 'invalid';
 }

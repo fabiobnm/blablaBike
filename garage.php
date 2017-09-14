@@ -1,6 +1,9 @@
 <?php
 include 'header.php';
 
+?>
+    <body style="background: coral"></body>
+<?php
 
 sec_session_start();
 if(login_check($mysqli) == true) {
@@ -20,9 +23,9 @@ if(login_check($mysqli) == true) {
 
 
         echo "<br>";
-        echo "Hai ";
+        echo "<h3>Hai ";
         echo $stampa['totale'];
-        echo " biciclette";
+        echo " bicicletteeeeeee </h3>";
         echo "<br>";
         echo "<br>";
 
@@ -39,21 +42,28 @@ if(login_check($mysqli) == true) {
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
             ?>
-            <div class="row">
+            <div class=" ">
                 <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
+                    <div class="thumbnail" style="border-radius: 50px;height: 390px">
 
-                        <img <?php if ($row['tipo'] == 0){ ?>src="img/montagna.svg"<?php } else ?> src="img/strada.svg"
+                        <img style="border-radius: 50px;height: 150px"<?php if ($row['tipo'] == 0){ ?>src="img/mountainVera%202.jpg"style="width: 400px;height: 200px" <?php }
+                             else ?> src="img/corsaVera%202.jpg" style="width: 400px;height: 200px";
                              alt="vvvv">
                         <div class="caption">
-                            <h3><?php echo $row["nome"]; ?></h3>
-                            <p>è una bici da <?php if ($row["tipo"] == 0) {
+                            <h3 style="text-align: center"><?php echo $row["nome"]; ?></h3>
+                            <p style="text-align: center">Bike da <?php if ($row["tipo"] == 0) {
                                     echo 'mountain';
                                 } else {
                                     echo 'corsa';
-                                } ?> di colore <?php echo $row["colore"]; ?> </p>
-                            <p><a href="eliminaBike.php?ID=<?php echo $row['ID']; ?>" class="btn btn-primary" role="button">elimina</a> <a
-                                        href="modificaBike.php" class="btn btn-default" role="button">modifica</a>
+                                } ?>, di colore <?php echo $row["colore"]; ?> <br>
+                                di Marca  <?php echo $row["marca"]; ?><br>
+                                e Modello  <?php echo $row["modello"]; ?>
+                                Prodotta nel <?php echo $row["annoFab"]; ?> e acquistata dall'utente nel <?php echo $row["annoAcq"]; ?><br>
+                                  <?php if($row['tipo']==0){?>ha ruote da <?php echo $row['ruote'];}
+                                  else {?>pesa <?php echo $row['peso'];
+                                  echo ' Kg';}?> </p>
+                            <p><a style="margin-left: 31px" href="biciclettaVenduta.php?ID=<?php echo $row['ID']; ?>" class="btn btn-primary" role="button">elimina</a> <a
+                                        href="modificaBike.php?ID=<?php echo $row['ID']; ?>" class="btn btn-default" role="button">modifica</a>
        <?php
             $bike=$row['ID'];
             $vendita="SELECT COUNT(*) as conto FROM annuncio 
@@ -113,16 +123,22 @@ if(login_check($mysqli) == true) {
 
         while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 
-            ?> <div class="row">
+            ?> <div class=" ">
                 <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
+                    <div class="thumbnail" style="border-radius: 50px;height: 390px">
 
-                        <img <?php if($row['tipo']==0){ ?>src="img/montagna.svg"<?php } else  ?> src="img/strada.svg"   alt="vvvv">
+                        <img style="border-radius: 80px"<?php if($row['tipo']==0){ ?>src="img/mountainVera%202.jpg"style="width: 400px;height: 200px" <?php }
+                        else  ?> src="img/corsaVera%202.jpg" style="width: 400px;height: 200px"  alt="vvvv">
                         <div class="caption">
-                            <h3><?php echo $row["nome"]; ?></h3>
-                            <p>è una bici da <?php if($row["tipo"]==0){echo 'mountain';}
-                                else {echo 'corsa';}?> di colore <?php echo $row["colore"]; ?> </p>
-                            <p><a href="profilo.php" class="btn btn-primary" role="button">profilo</a> <a href="utente.php" class="btn btn-default" role="button">utente</a>
+                            <h3 style="text-align: center"><?php echo $row["nome"]; ?></h3>
+                            <p style="text-align: center">Bike da <?php if ($row["tipo"] == 0) {
+                                    echo 'mountain';
+                                } else {
+                                    echo 'corsa';
+                                } ?>, di colore <?php echo $row["colore"]; ?> <br>
+                                Prodotta nel <?php echo $row["annoFab"]; ?> e acquistata dall'utente nel <?php echo $row["annoAcq"]; ?><br></p>
+
+                            <p>
       <?php
             $bike=$row['ID'];
             $vendita="SELECT COUNT(*) as conto FROM annuncio
@@ -149,9 +165,10 @@ if(login_check($mysqli) == true) {
           else {
 
             echo $utente2;
-            echo "<br>";
+            echo "<br>tu e ";
             echo $utente1;
-            echo 'non sieti amici richiedi amicizia';
+            echo ' non sieti amici <br>';
+              echo 'cercalo nella tua pagina utente e Richiedi amicizia ';
 
 
 
@@ -165,7 +182,7 @@ if(login_check($mysqli) == true) {
 
 else {
 
-    echo accedicazzo;?>  <a href="login.php">Login</a><?php
+    echo accedi;?>  <a href="login.php">Login</a><?php
 }
 
 

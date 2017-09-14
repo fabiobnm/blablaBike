@@ -1,0 +1,27 @@
+/**
+ * @license
+ * MyFonts Webfont Build ID 3344394, 2017-02-14T08:02:13-0500
+ *
+ * The fonts listed in this notice are subject to the End User License
+ * Agreement(s) entered into by the website owner. All other parties are
+ * explicitly restricted from using the Licensed Webfonts(s).
+ *
+ * You may obtain a valid license at the URLs below.
+ *
+ * Webfont: NHaasGroteskTXStd-65Md by Linotype
+ * URL: http://www.myfonts.com/fonts/linotype/neue-haas-grotesk/std-text-65-medium/
+ * Copyright: Copyright &#x00A9; 2013 Monotype Imaging Inc. All rights reserved.
+ * Licensed pageviews: 250,000
+ *
+ *
+ * License: http://www.myfonts.com/viewlicense?type=web&buildid=3344394
+ *
+ * Â© 2017 MyFonts Inc
+*/
+
+
+/* @import must be at top of file, otherwise CSS will not work */
+@import url("//hello.myfonts.net/count/33080a");
+
+
+@font-face {font-family: 'NHaasGroteskTXStd-65Md';src: url('webfonts/33080A_0_0.eot');src: url('webfonts/33080A_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/33080A_0_0.woff2') format('woff2'),url('webfonts/33080A_0_0.woff') format('woff'),url('webfonts/33080A_0_0.ttf') format('truetype');}

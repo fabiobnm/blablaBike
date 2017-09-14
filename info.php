@@ -20,13 +20,16 @@ if(login_check($mysqli) == true) {
                     $stmt->fetch();
                      ?>
                       <h1>Modifica le tue informazioni</h1>
-                     <form action="process_updateinfo.php" method="post">
-                         nickname:<input type="text" value="<?php echo $nickname ?>" name="nickname" readonly><br>
-                         nome: <input type="text" value="<?php echo $nome ?>" name="nome"><br>
-                         cognome: <input type="text"value="<?php echo $cognome ?>"  name="cognome"><br>
-                         dataNascita: <input type="date" value="<?php echo $dataNascita ?>"name="dataNascita"><br>
-                         luogoNascita: <input type="text" value="<?php echo $luogoNascita ?>"name="luogoNascita"><br>
-                         sesso: <label class="radio-inline">
+                    <div class=" ">
+                    <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail" style="border-radius: 30px">
+                     <form action="process_updateinfo.php" method="post" style="margin-left: 66px">
+                         nickname<br><input type="text" value="<?php echo $nickname ?>" name="nickname" readonly><br>
+                         nome<br> <input type="text" value="<?php echo $nome ?>" name="nome" required><br>
+                         cognome<br> <input type="text"value="<?php echo $cognome ?>"  name="cognome" required><br>
+                         dataNascita<br> <input type="date" value="<?php echo $dataNascita ?>"name="dataNascita" required><br>
+                         luogoNascita<br> <input type="text" value="<?php echo $luogoNascita ?>"name="luogoNascita" required><br>
+                         sesso<br> <label class="radio-inline">
                              <?php if($sesso == true){
                              ?>
                                  <input type="radio" name="sesso" id="inlineRadio1" value=1 checked> UOMO
@@ -49,8 +52,8 @@ if(login_check($mysqli) == true) {
 
                                   }
                                  ?>
-                         residenza: <input type="text" value="<?php echo $residenza ?>"name="residenza"><br>
-                         esperienza: <label class="radio-inline">
+                         residenza<br> <input type="text" value="<?php echo $residenza ?>"name="residenza" required><br>
+                         esperienza<br> <label class="radio-inline">
                              <?php if($esperienza == 1){
                              ?>
                              <input type="radio" name="esperienza" id="inlineRadio1" value=1 checked> PRINCIPIANTE
@@ -77,24 +80,31 @@ if(login_check($mysqli) == true) {
                                     ?>
                   <input type="submit" value="MODIFICA">
                           </form>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
                     <?php
              }else{
                          ?>
                           <h1>Inserisci le tue informazioni</h1>
-                         <form action="process_info.php" method="post">
-                             nickname:<input type= "text" value="<?php echo $nickname ?>" name="nickname" readonly><br>
-                         nome: <input type="text" name="nome"><br>
-                         cognome: <input type="text"  name="cognome"><br>
-                             dataNascita: <input type="date" name="dataNascita"><br>
-                             luogoNascita: <input type="text" name="luogoNascita"><br>
-                             sesso: <label class="radio-inline">
+                    <div class=" ">
+                    <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail" style="border-radius: 30px">
+                         <form action="process_info.php" method="post" style="margin-left: 66px">
+                             nickname<br><input type= "text" value="<?php echo $nickname ?>" name="nickname" readonly><br>
+                         nome<br><input type="text" name="nome" required><br>
+                         cognome<br> <input type="text"  name="cognome" required><br>
+                             dataNascita<br> <input type="date" name="dataNascita" required><br>
+                             luogoNascita<br> <input type="text" name="luogoNascita" required><br>
+                             sesso<br> <label class="radio-inline">
                                      <input type="radio" name="sesso" id="inlineRadio1" value=1> UOMO
                                  </label>
                                  <label class="radio-inline">
                                      <input type="radio" name="sesso" id="inlineRadio2" value=0> DONNA
                                  </label><br>
-                                 residenza: <input type="text" name="residenza"><br>
-                             esperienza: <label class="radio-inline">
+                                 residenza<br> <input type="text" name="residenza" required><br>
+                             esperienza<br> <label class="radio-inline">
                                      <input type="radio" name="esperienza" id="inlineRadio1" value=1> PRINCIPIANTE
                                  </label>
                                  <label class="radio-inline">
@@ -102,6 +112,11 @@ if(login_check($mysqli) == true) {
                                  </label><br>
                              <input type="submit" value="INSERISCI">
                              </form>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
              <?php
 
                 }
@@ -114,5 +129,5 @@ if(login_check($mysqli) == true) {
 
 } else {
 
-       echo suca;
+       echo 'invalid';
 }

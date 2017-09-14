@@ -1,6 +1,8 @@
-h1 {font-size: 190px; }
-.navbar-brand img {width: 152px }
+h1 {font-size: 90px; font-style: italic ; }
+.navbar-brand img {width: 300px ; margin-top: -28px}
 .navbar-brand{padding: 12px 12px}
 .navbar-right{margin-right: 5px}
 .chat{background: deepskyblue ;border-radius: 40px ;text-align: center}
 .culo{background: #EF53B5 ;border-radius: 40px }
+.testFlo{float: left; height: 120px}
+

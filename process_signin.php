@@ -12,7 +12,7 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
 {
     $email = strtolower($_POST['email']);
     $password = $_POST['password'];
-    $nickname = strtoupper($_POST['nickname']);// Recupero la password criptata.
+    $nickname = strtoupper($_POST['nickname']);
     $confpassword= $_POST['confpassword'];
     if($password==$confpassword)
     {
@@ -31,9 +31,16 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
         }
 
         else{
-            if(singin($email, $password, $nickname, $mysqli)==true){
 
-                header("location: /utente.php?messaggio=ti sei registrato può inserire informazione");
+
+
+            if(singin($email, $password, $nickname, $mysqli)==true){
+                creafiltri($nickname,$mysqli);
+
+                if(creafiltri($nickname,$mysqli)==true) {
+
+                }
+                header("location: /info.php?messaggio=ti sei registrato può inserire informazione");
             }
             else
                 header("location: /signin.php?error=probblemi");

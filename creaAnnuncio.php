@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: BNM
- * Date: 24/02/17
- * Time: 17:46
- */
 
-include 'db_connect.php';
-include 'functions.php';
+include 'header.php';
+
+
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
 if(login_check($mysqli) == true) {
 
@@ -16,12 +11,12 @@ if(login_check($mysqli) == true) {
 
     echo '<h1>vendi bike</h1>'
     ?>
-    <form action="process_annuncio.php" method="post">
+    <form action="process_annuncio.php" method="post" style="align-content: center">
         <input type="hidden" value="<?php echo $bike ?>" name="bicicletta" readonly>
 
-        <label>Titolo Annunciooooooo</label> <br><input type="text" name="titolo" value=""><br>
-        <label>prezzo</label> <br><input type="number" name="prezzo"> <label>$</label> <br>
-        <label>Descizione</label> <br><input type="text" name="descrizione"><br>
+        <label>Titolo Annuncio</label> <br><input type="text" name="titolo" value="" required><br>
+        <label>prezzo</label> <br><input type="number" name="prezzo" min="1" required> <label>€</label> <br>
+        <label>Descizione</label> <br><input type="text" name="descrizione" ><br>
 
 
         <br>

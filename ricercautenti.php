@@ -5,8 +5,7 @@
  * Date: 24/02/17
  * Time: 17:46
  */
-include 'db_connect.php';
-include 'functions.php';
+include 'header.php';
 
 sec_session_start(); // usiamo la nostra funzione per avviare una sessione php sicura
 if(isset($_POST['ricercautente'])) {
@@ -15,21 +14,22 @@ if(isset($_POST['ricercautente'])) {
 
 
 
-   /* $stmt = $mysqli->query("SELECT * FROM utente WHERE nickname LIKE '%c%'");
-    //$data = $stmt->fetch_array(PDO::FETCH_ASSOC);
-    $data = $stmt->fetch_all(PDO::FETCH_ASSOC);
-    $json =  json_encode($data);
-    $testmail = $json[0];
-    echo $json; */
 
 
-    $query="SELECT * FROM utente WHERE nickname LIKE '%$ricercautente%' ";
+    $query="SELECT  email,nickname FROM utente WHERE nickname LIKE '%$ricercautente%' AND nickname!='ANONYMOUS'";
     $result=mysqli_query($mysqli,$query);
 
+    $querycount="SELECT COUNT(*) as conto FROM utente WHERE nickname LIKE '%$ricercautente%' AND nickname!='ANONYMOUS'";
+    $resultcount=mysqli_query($mysqli,$querycount);
 
+    $rowcount=mysqli_fetch_array($resultcount,MYSQLI_ASSOC);
 
+    $conto=$rowcount['conto'];
+    echo "<h2>$conto";
+    echo ' utenti trovati</h2><br>';
 
     while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
+
 
         echo $row['email'];
         echo ' ';
@@ -37,27 +37,28 @@ if(isset($_POST['ricercautente'])) {
          <br><?php
     }
 
+     ?>  <h2>Aggiungi utenti isolati</h2><?php
+
+
+    $queryisolato="SELECT email,nickname from utente where nickname not IN (SELECT utente from segue WHERE approvato=1) 
+    and nickname NOT IN(SELECT seguitoDa from segue WHERE approvato=1)AND nickname!='ANONYMOUS' AND
+     nickname not in (SELECT utente FROM partecipa WHERE uscita IN (SELECT ID from uscita where dataIncontro 
+     BETWEEN DATE_SUB(CURRENT_DATE,INTERVAL 1 YEAR) AND CURRENT_DATE))";
+
+    $utenteisolato=mysqli_query($mysqli,$queryisolato);
+
+    while($rowisolato=mysqli_fetch_array($utenteisolato,MYSQLI_ASSOC)){
+
+        echo $rowisolato['email'];
+        echo ' ';
+        ?> <a href="profilo.php?profilo=<?php echo $rowisolato['nickname'];?>"><?php echo $rowisolato['nickname'];?></a>
+        <br><?php
+    }
 
 
 
 
 
-
-    /*
-    if($test = ricercautente($ricercautente,$mysqli) == true) {
-        // Login eseguito
-        echo $test;
-        echo 'visualizza il profilo di ccc ';
-
-        echo '<a href="http://localhost:8080/profilo.php?profilo='.$ricercautentex.'">'.$ricercautente.'</a>';
-
-    } else {
-        echo 'non esiste';
-
-
-        // Login fallito
-        //header('Location: ./login.php?error=1');
-    }*/
 } else {
     // Le variabili corrette non sono state inviate a questa pagina dal metodo POST.
     echo 'Invalid Request';

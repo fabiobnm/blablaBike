@@ -17,7 +17,7 @@ if(isset($_SESSION['nikname'],$_GET['ID'])) {
         // Login eseguito
         header("location: /garage.php?messaggio=hai cancellato");
     } else {
-        echo 'pollo';
+        header("location: /garage.php?messaggio=errore");
 
 
         // Login fallito

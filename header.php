@@ -11,7 +11,8 @@ include 'functions.php'
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 
 <html><body  >
@@ -20,7 +21,7 @@ include 'functions.php'
 
 
     <nav class="navbar navbar-default" >
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-top: 29px">
             <div class="navbar-header">
                 <?php
                 sec_session_start();
@@ -41,13 +42,20 @@ include 'functions.php'
             </div>
          <?php
          sec_session_start();
-         if(login_check($mysqli) == true) {
+         //controllo se sono loggato
+         if(login_check($mysqli) == true)
+           {
 
-
+             // controllo se ci sono richieste di amicizie in sospeso
              $utente=$_SESSION['nikname'];
              $amici="SELECT approvato as amici FROM segue WHERE seguitoDa='$utente' && approvato=0 ";
              $amicizia = mysqli_query($mysqli, $amici);
              $follow = mysqli_fetch_array($amicizia, MYSQLI_ASSOC);
+             //controllo se ci sono richieste in mercatino
+             $richiestaAcq="SELECT count(*) as conto from richiestaacquisto WHERE  annuncio in (
+              SELECT IDannuncio FROM annuncio where venduto!= 1 AND venditore='$utente')";
+             $ric=mysqli_query($mysqli, $richiestaAcq);
+             $acquisto = mysqli_fetch_array($ric, MYSQLI_ASSOC);
 
 
 
@@ -55,19 +63,32 @@ include 'functions.php'
 
              ?>
             <a class="navbar-text navbar-right" href="logout.php">Logout</a>
-            <a class="navbar-text navbar-right" href="profilo.php"><?php echo 'Profilo ',$_SESSION['nikname'];?></a>
+            <a class="navbar-text navbar-right" style="color: dodgerblue" href="profilo.php"><?php echo 'Profilo ',$_SESSION['nikname'];?></a>
              <a class="navbar-text navbar-right" style="color: gold" href="mercatino.php">MERCATINO</a>
+               <a class="navbar-text navbar-right" style="color: limegreen" href="visualizzaUscite.php">USCITE</a>
 
-             <?php if(isset($follow['amici'])==true && $follow['amici']==0){
-               ?>  <a class="navbar-text navbar-right" href="visualizzaRichieste.php" style="color: red">RICHIESTA </a>
+             <?php if(isset($follow['amici'])==true && $follow['amici']==0)
+                   {//stampo richiesta di amicizia
+               ?>  <a class="navbar-text navbar-right" href="visualizzaRichieste.php" style="color: red">RICHIESTA</a>
+
+           <?php } if(isset($acquisto['conto']) ==true && $acquisto['conto']>=1 )
+                   {  //stampo richiesta mercatino
+                       ?>
+
+                       <a class="navbar-text navbar-right" href="visualAcquRic.php" style="color: red"><?php echo $acquisto['conto'];?>
+                       RICHIESTE in mercatino </a>
 
 
+                   <?php         }
+           }else
+    {    //sezione se non sei loggato
+        ?>
 
-<?php  } }else{ ?>
-            <a class="navbar-text navbar-right" href="signin.php">vuoi iscriverti? signin</a>
+            <a class="navbar-text navbar-right" href="signin.php">vuoi iscriverti? Signin</a>
             <a class="navbar-text navbar-right" href="login.php">Login</a>
              <a class="navbar-text navbar-right" style="color: gold; font: bold"  href="mercatino.php">MERCATINO</a>
-       <?php     }  ?>
+       <?php
+    }  ?>
 
         </div>
     </nav>

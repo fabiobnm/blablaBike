@@ -9,10 +9,10 @@ if(login_check($mysqli) == true) {
     $query="SELECT utente FROM segue WHERE seguitoDa = '$nickname'&& approvato=0";
     $result=mysqli_query($mysqli,$query);
 
-    echo 'richieste amicizia';
+    echo '<h3>richieste amicizia</h3><br>';
     while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
-    echo 'peneeeeeeee';
-        ?> <div class="row">
+
+        ?> <div class=" ">
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
 
@@ -20,7 +20,8 @@ if(login_check($mysqli) == true) {
                     <div class="caption">
                         <h3><?php echo $row["utente"]; ?></h3>
                         <p>vuole essere tuo amico</p>
-                        <p><a href="accettaRichiesta.php?profilo=<?php echo $row['utente'];?>" class="btn btn-primary" role="button">Accetta</a> <a href="utente.php" class="btn btn-default" role="button">visualizza profilo</a></p>
+                        <p><a href="accettaRichiesta.php?profilo=<?php echo $row['utente'];?>" class="btn btn-primary" role="button">Accetta</a>
+                            <a href="rifiutaAmicizia.php?rifiuta=<?php echo $row['utente'];?>" class="btn btn-default" role="button" style="color: red">rifiuta</a></p>
                     </div>
                 </div>
             </div>

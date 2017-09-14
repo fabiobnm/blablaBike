@@ -1,27 +1,26 @@
 <?php
 include 'header.php';
 ?>
-<html><body style="background:lightyellow">
-
-<a class="container">
+<body style="background:lightyellow">
 
 
-    <a href="utente.php">
+<h2 style="text-align: center">Pedala per Restare in  Equilibrio</h2><br>
+<div class="thumbnail testFlo" style="border-radius: 50px; background-color: deepskyblue; width: 50%">
+    <a href="login.php"><h3 style="text-align: center;margin-top: 40px">Login</h3></a></div>
+<div class="thumbnail testFlo" style="border-radius: 50px; background-color: springgreen; width: 50%">
+    <a href="signin.php"><h3 style="text-align: center;margin-top: 40px">non sei registrato? ISCRIVITI</h3></a></div>
+<div class="thumbnail testFlo" style="border-radius: 50px; background-color: gold; width: 50%">
+    <a href="mercatino.php"><h3 style="text-align: center;margin-top: 40px">Fatti un giro nel MERCATINO</h3></a></div>
+<div class="thumbnail testFlo" style="border-radius: 50px; background-color: orangered; width: 50%">
+    <a href="index.php"><h3 style="text-align: center;margin-top: 40px"></h3></a></div>
+
+<br>
 
 
-        <img src="img/blablacar-ridesharing-logo-1.svg" alt="carhhgddf" style="width:254px;height:228px;"></a>
 
-<h3>pedala per restare in  equilibrio</h3>
-<a href="phpinfo.php">PHP info</a>
-<a href="login.php">Login</a>
-<a href="signin.php">Singin</a><br>
-    <form action="process_info.php" method="post">
-    cerca uscite dove vuoi<input type="search"><input type="submit">
-    </form>
 
-</a>
 
-</div>
+
 <!--<a href="db_connect.php">Database Link</a>-->
 
-</body></html>
+</body>
