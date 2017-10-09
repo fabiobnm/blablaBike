@@ -17,9 +17,9 @@ if(isset($_SESSION['nikname'], $_GET['profilo'])) {
     echo "ok fino qui tutto bene";
     if(follow($utente,$seguitoDa,$mysqli) == true) {
         // Login eseguito
-        header("location: /profilo.php?profilo=$seguitoDa&messaggio=richiesta inviata");
+        header("location: ./profilo.php?profilo=$seguitoDa&messaggio=richiesta inviata");
     } else {
-        echo 'pollo';
+        echo 'problemi con il database';
 
 
         // Login fallito

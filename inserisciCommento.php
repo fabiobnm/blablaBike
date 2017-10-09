@@ -30,9 +30,9 @@ if(isset($_POST['testo'],$_POST['annuncio'])) {
 
     if(inserisciCommento($testo,$nickname,$annuncio,$mysqli) == true) {
         // Login eseguito
-        header("location: /commenti.php?IDannuncio=$annuncio");
+        header("location: ./commenti.php?IDannuncio=$annuncio");
     } else {
-        echo 'pollo';
+        echo 'errore inserimento';
 
 
         // Login fallito

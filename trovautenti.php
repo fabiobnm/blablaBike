@@ -18,10 +18,14 @@ if(isset($_POST['trovautente'])) {
 
     $query="SELECT  email,utente.nickname FROM utente JOIN informazioni ON utente.nickname= informazioni.nickname
              WHERE informazioni.residenza LIKE '%$trovautente%' AND informazioni.nickname!='ANONYMOUS'";
+    $mysqli->query($query)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $result=mysqli_query($mysqli,$query);
 
     $querycount="SELECT COUNT(*) as conto FROM utente JOIN informazioni ON utente.nickname= informazioni.nickname
              WHERE informazioni.residenza LIKE '%$trovautente%' AND informazioni.nickname!='ANONYMOUS'";
+    $mysqli->query($querycount)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $resultcount=mysqli_query($mysqli,$querycount);
 
     $rowcount=mysqli_fetch_array($resultcount,MYSQLI_ASSOC);
@@ -49,4 +53,7 @@ if(isset($_POST['trovautente'])) {
 }
 
 ?>
+</div>
+</body>
+</html>
 

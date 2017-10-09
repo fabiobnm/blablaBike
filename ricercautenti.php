@@ -17,9 +17,13 @@ if(isset($_POST['ricercautente'])) {
 
 
     $query="SELECT  email,nickname FROM utente WHERE nickname LIKE '%$ricercautente%' AND nickname!='ANONYMOUS'";
+    $mysqli->query($query)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $result=mysqli_query($mysqli,$query);
 
     $querycount="SELECT COUNT(*) as conto FROM utente WHERE nickname LIKE '%$ricercautente%' AND nickname!='ANONYMOUS'";
+    $mysqli->query($querycount)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $resultcount=mysqli_query($mysqli,$querycount);
 
     $rowcount=mysqli_fetch_array($resultcount,MYSQLI_ASSOC);
@@ -44,6 +48,8 @@ if(isset($_POST['ricercautente'])) {
     and nickname NOT IN(SELECT seguitoDa from segue WHERE approvato=1)AND nickname!='ANONYMOUS' AND
      nickname not in (SELECT utente FROM partecipa WHERE uscita IN (SELECT ID from uscita where dataIncontro 
      BETWEEN DATE_SUB(CURRENT_DATE,INTERVAL 1 YEAR) AND CURRENT_DATE))";
+    $mysqli->query($queryisolato)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
 
     $utenteisolato=mysqli_query($mysqli,$queryisolato);
 
@@ -65,4 +71,8 @@ if(isset($_POST['ricercautente'])) {
 }
 
 ?>
+</div>
+</body>
+</html>
+
 

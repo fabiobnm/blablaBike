@@ -1,27 +1,44 @@
+<!doctype html>
+<html lang="it">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>BlaBlaBike</title>
+    <?php
+    include 'db_connect.php';
+    include 'functions.php'
+    ?>
 
-<?php
-include 'db_connect.php';
-include 'functions.php'
-?>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 
-<html><body  >
+    <link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ultra" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lobster+Two" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+
+</head>
+<body>
+
 <div class="container">
 
 
 
-    <nav class="navbar navbar-default" >
-        <div class="container-fluid" style="margin-top: 29px">
+    <nav class="navbar navbar-default header">
+        <div class="container-fluid marg">
             <div class="navbar-header">
                 <?php
                 sec_session_start();
@@ -49,12 +66,18 @@ include 'functions.php'
              // controllo se ci sono richieste di amicizie in sospeso
              $utente=$_SESSION['nikname'];
              $amici="SELECT approvato as amici FROM segue WHERE seguitoDa='$utente' && approvato=0 ";
-             $amicizia = mysqli_query($mysqli, $amici);
+             $mysqli->query($amici)
+             or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
+
+               $amicizia = mysqli_query($mysqli, $amici);
              $follow = mysqli_fetch_array($amicizia, MYSQLI_ASSOC);
              //controllo se ci sono richieste in mercatino
              $richiestaAcq="SELECT count(*) as conto from richiestaacquisto WHERE  annuncio in (
               SELECT IDannuncio FROM annuncio where venduto!= 1 AND venditore='$utente')";
-             $ric=mysqli_query($mysqli, $richiestaAcq);
+               $mysqli->query($richiestaAcq)
+               or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
+
+               $ric=mysqli_query($mysqli, $richiestaAcq);
              $acquisto = mysqli_fetch_array($ric, MYSQLI_ASSOC);
 
 
@@ -86,7 +109,7 @@ include 'functions.php'
 
             <a class="navbar-text navbar-right" href="signin.php">vuoi iscriverti? Signin</a>
             <a class="navbar-text navbar-right" href="login.php">Login</a>
-             <a class="navbar-text navbar-right" style="color: gold; font: bold"  href="mercatino.php">MERCATINO</a>
+
        <?php
     }  ?>
 

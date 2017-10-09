@@ -10,10 +10,10 @@ if(login_check($mysqli) == true) {
 
 
 
-    echo '<h1>Tappe</h1>';
+    echo '<h1 class="center">Tappe</h1>';
     if (isset($_GET['messaggio'])) {
         $messaggio = $_GET['messaggio'];
-        echo " <h1>$messaggio</h1>";
+
     }
     if(isset($_GET['uscita'])) {
 
@@ -21,31 +21,39 @@ if(login_check($mysqli) == true) {
         $utente=$_SESSION['nikname'];
         $uscita=$_GET['uscita'];
         $query = "SELECT * FROM tappa WHERE uscita=$uscita";
+        $mysqli->query($query)
+        or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
         $result = mysqli_query($mysqli, $query);
 
 
-        $queryS = "SELECT count(*) AS conto FROM uscita WHERE ID=$uscita AND (visibile=0 OR (organizzatore IN 
+        $queryS = "SELECT count(*) AS conto FROM uscita WHERE ID=$uscita AND (visibile=0 OR organizzatore='$utente' OR (organizzatore IN 
            (SELECT utente from segue WHERE seguitoDa='$utente' and approvato=1)OR organizzatore IN
             (SELECT seguitoDa from segue WHERE utente='$utente'AND approvato=1)))";
+        $mysqli->query($queryS)
+        or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
         $resultS = mysqli_query($mysqli, $queryS);
         $rowS = mysqli_fetch_array($resultS, MYSQLI_ASSOC);
 
         if($rowS['conto']>=1) {
 
             $queryLunghezza = "SELECT SUM(lunghezza) as somma FROM tappa WHERE uscita=$uscita";
+            $mysqli->query($queryLunghezza)
+            or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
             $resultLunghezza = mysqli_query($mysqli, $queryLunghezza);
             $rowLunghezza = mysqli_fetch_array($resultLunghezza, MYSQLI_ASSOC);
             $somma = $rowLunghezza['somma'];
 
             $queryTot = "SELECT distanza,nascosto FROM uscita WHERE ID=$uscita";
+            $mysqli->query($queryTot)
+            or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
             $resultTot = mysqli_query($mysqli, $queryTot);
             $rowTot = mysqli_fetch_array($resultTot, MYSQLI_ASSOC);
             $distanzaUscita = $rowTot['distanza'];
             $nascosto=$rowTot['nascosto'];
             $kmRimanenti = ($distanzaUscita - $somma);
-            echo '<h3> uscita ';
+            echo '<h2 class="center"> uscita ';
             echo $uscita;
-            echo '</h3>';
+            echo '</h2>';
 
             while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 
@@ -55,20 +63,20 @@ if(login_check($mysqli) == true) {
                 ?>
                 <div class=" ">
                     <div class="col-sm-6 col-md-4">
-                        <div class="thumbnail" style="border-radius: 30px">
+                        <div class="thumbnail rad30">
 
                             <div class="caption">
-                                <h3 style="text-align: center">tappa n°<?php echo $row["numero"]; ?></h3>
-                                <p style="text-align: center">nome: <?php echo $row["nome"]; ?>
-                                    , lunghezza: <?php echo $row["lunghezza"]; ?>Km <br>
+                                <h3 class="center">Tappa n <?php echo $row["numero"]; ?></h3><br>
+                                <p class="center">Nome: <?php echo $row["nome"]; ?>
+                                    Lunghezza: <?php echo $row["lunghezza"]; ?>Km <br>
 
                                     <?php if ($tipo == 1) {
-                                        echo 'pianeggiante';
+                                        echo 'Pianeggiante';
                                     } else if ($tipo == 2) {
                                         echo 'discesa';
                                     } else {
                                         echo 'discesa';
-                                    } ?> luogo: <?php echo $row["luogo"]; ?>
+                                    } ?><br>luogo: <?php echo $row["luogo"]; ?>
 
 
                             </div>
@@ -80,8 +88,8 @@ if(login_check($mysqli) == true) {
             }
 
             if($kmRimanenti==0 && $nascosto!=1){?>
-                <div class="thumbnail" style="float: left;border-radius: 30px;width: 300px;height: 100px;background-color: #4CAF50">
-                    <a href="pubblicaUscita.php?uscita=<?php echo $uscita;?>" style="text-align: center"><h3 style="text-align: center;margin-top: 40px">Pubblica Uscita</h3></a>
+                <div class="thumbnail tappe">
+                    <a href="pubblicaUscita.php?uscita=<?php echo $uscita;?>" class="center"><h3 class="pubuscita">Pubblica Uscita</h3></a>
                 </div>
 
          <?php   }
@@ -93,6 +101,8 @@ if(login_check($mysqli) == true) {
 
 
                 $queryOrg = "SELECT organizzatore FROM uscita WHERE ID=$uscita";
+                $mysqli->query($queryOrg)
+                or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
                 $resultOrg = mysqli_query($mysqli, $queryOrg);
                 $rowOrg = mysqli_fetch_array($resultOrg, MYSQLI_ASSOC);
 
@@ -100,9 +110,9 @@ if(login_check($mysqli) == true) {
                     ?>
                     <div class=" ">
                         <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail" style="border-radius: 30px">
+                            <div class="thumbnail rad30">
 
-                                <?php echo '<h3 style="text-align: center">mancano ';
+                                <?php echo '<h3 class="center">mancano ';
                                 echo $kmRimanenti;
                                 echo 'Km, da inserire </h3>';
 
@@ -113,31 +123,66 @@ if(login_check($mysqli) == true) {
                                 <form action="tappeInserisci2.php" method="post">
 
                                     <input type="hidden" name="uscita" value="<?php echo $uscita; ?>">
-                                    <label>nome tappa</label><br> <input type="text" name="nome" required><br>
+
+                    <?php if(isset($_GET['nome'])) {
+                        $nome=$_GET['nome'];?>
+                                    <label>nome tappa</label><br> <input type="text" value="<?php echo $nome?>" name="nome" ><?php if (isset($_GET['messaggio0'])) {
+                                        $messaggio0 = $_GET['messaggio0'];
+                                        echo " <h1 class='erroreros'>$messaggio0</h1>";
+                                    }}else{?><label>nome tappa</label><br> <input type="text" name="nome" ><?php if (isset($_GET['messaggio0'])) {
+                        $messaggio0 = $_GET['messaggio0'];
+                        echo " <h1 class='erroreros'>$messaggio0</h1>";
+                    }}?><br>
+
+
                                     <label>tipo</label> <br>
                                     <label class="radio-inline" style="color:deepskyblue; font-weight: bold">
-                                        <input type="radio" name="tipo" id="inlineRadio1" value=1> pianeggiante
+                                        <input type="radio" name="tipo" id="inlineRadio1" value=1 checked> pianeggiante
                                     </label>
                                     <label class="radio-inline" style="color: #4CAF50; font-weight: bold">
                                         <input type="radio" name="tipo" id="inlineRadio2" value=2> discesa
                                     </label>
                                     <label class="radio-inline" style="color: red; font-weight: bold">
                                         <input type="radio" name="tipo" id="inlineRadio3" value=3> salita
-                                    </label>
+                                    </label><?php if (isset($_GET['messaggio1'])) {
+                                        $messaggio1 = $_GET['messaggio1'];
+                                        echo " <h1 class='erroreros'>$messaggio1</h1>";
+                                    }?>
                                     <br>
-                                    <label>Lunghezza</label>
-                                    <br><input type="number" name="Lunghezza" max="<?php echo $kmRimanenti ?>" required>Km<br>
+                                    <label>Lunghezzaa</label>
+                                    <br>
+
+
+                    <?php if(isset($_GET['Lunghezza'])) {
+                        $lunghezza=$_GET['Lunghezza'];?>
+                                    <input type="number" name="Lunghezza" max="<?php echo $kmRimanenti ?>" value="<?php echo $lunghezza?>">Km<?php if (isset($_GET['messaggio2'])) {
+                                        $messaggio2 = $_GET['messaggio2'];
+                                        echo " <h1 class='erroreros'>$messaggio2</h1>";
+                                    }}else{?><input type="number" name="Lunghezza" max="<?php echo $kmRimanenti ?>">Km<?php if (isset($_GET['messaggio2'])) {
+                        $messaggio2 = $_GET['messaggio2'];
+                        echo " <h1 class='erroreros'>$messaggio2</h1>";
+                    }}?><br>
                                     <label>Luogo</label>
-                                    <br><input type="text" name="Luogo" required><br>
+                                    <br>
+
+                    <?php if(isset($_GET['Luogo'])) {
+                        $luogo=$_GET['Luogo'];?>
+                                    <input type="text" name="Luogo" value="<?php echo $luogo?>" required><?php if (isset($_GET['messaggio3'])) {
+                                        $messaggio3 = $_GET['messaggio3'];
+                                        echo " <h1 class='erroreros'>$messaggio3</h1>";
+                                    }}else{?><input type="text" name="Luogo" required><?php if (isset($_GET['messaggio3'])) {
+                        $messaggio3 = $_GET['messaggio3'];
+                        echo " <h1 class='erroreros'>$messaggio3</h1>";
+                    }}?><br>
 
                                     <br>
-                                    <input style="background: lemonchiffon" type="submit" value="INSERISCI">
+                                    <input class="sublog" type="submit" value="INSERISCI">
                                 </form>
 
                             </div>
                         </div>
                     </div>
-                    </div>
+
 
                     <?php
                 }
@@ -163,4 +208,9 @@ else{
 
     echo "accedi";
 }
+?>
+</div>
+</body>
+</html>
+
 

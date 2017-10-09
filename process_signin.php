@@ -14,46 +14,45 @@ if(isset($_POST['email'], $_POST['password'],$_POST['nickname'],$_POST['confpass
     $password = $_POST['password'];
     $nickname = strtoupper($_POST['nickname']);
     $confpassword= $_POST['confpassword'];
-    if($password==$confpassword)
+
+    if(($password==$confpassword)and(!empty($_POST['password'])))
     {
-        if (emailEsiste($email, $mysqli) == true)
-        {
-            if (login($email, $password, $mysqli) == true)
-            {
-
-                header("location: /utente.php?messaggio=eri gia registrato");
-            } else
-                header("location: /signin.php?error=email gia esistente");
-
-        }else  { if(nickEsiste($nickname,$mysqli)==true){
-
-            header("location: /signin.php?error=nickname gia usato");
-        }
-
-        else{
+        $query="INSERT INTO utente (email,nickname,password)VALUES('$email','$nickname','$password')";
+        $mysqli->query($query);
+        $a=$mysqli->error;
+        if (strpos($a, 'email') == true) {
+            echo $a;
+            echo 'true';
+            header("location: ./signin.php?&nik=$nickname&email=$email&error1=email gia presente");}else{
+            if (strpos($a, 'PRIMARY') == true) {
+                echo $a;
+                echo 'true';
+                header("location: ./signin.php?&nik=$nickname&email=$email&error2=nickname gia presente");}else{
 
 
+                $filtroM="INSERT INTO filtromercatino(nickname)VALUES('$nickname')";
+                $mysqli->query($filtroM)
+                or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
 
-            if(singin($email, $password, $nickname, $mysqli)==true){
-                creafiltri($nickname,$mysqli);
-
-                if(creafiltri($nickname,$mysqli)==true) {
-
-                }
-                header("location: /info.php?messaggio=ti sei registrato può inserire informazione");
-            }
-            else
-                header("location: /signin.php?error=probblemi");
+                $filtroU="INSERT INTO filtrouscite (nickname)VALUES('$nickname')";
+                $mysqli->query($filtroU)
+                or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
 
 
-        }}
+                $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
 
+                //$user_id = preg_replace("/[^0-9]+/", "", $nikname); // ci proteggiamo da un attacco XSS
+                $_SESSION['nikname'] = $nickname;
+                //$username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username); // ci proteggiamo da un attacco XSS
+                $_SESSION['email'] = $email;
+                $_SESSION['login_string'] =  $password.$user_browser;
+                //$_SESSION['login_string'] = hash('sha512', $password.$user_browser);
+                // Login eseguito con successo.
 
+                header("location: ./info.php?messaggio=ti sei registrato può inserire informazione");
 
-    }else  header("location: /signin.php?error=conferma password sbagliata");
-
-
-} else
+            }}}else{header("location: ./signin.php?nik=$nickname&email=$email&error5=conferma password sbagliata");}
+}
+else
     // Le variabili corrette non sono state inviate a questa pagina dal metodo POST.
     echo 'Invalid Request';
-

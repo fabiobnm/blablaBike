@@ -12,7 +12,7 @@ if(login_check($mysqli) == true) {
 
 
 
-    header("location: /partecipaUscita1.php");
+    header("location: ./partecipaUscita1.php");
 
     ?>
 

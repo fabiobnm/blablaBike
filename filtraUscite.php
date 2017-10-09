@@ -13,12 +13,20 @@ $nickname = $_SESSION['nikname'];
 if(isset($_GET['tipologia'])){
     $tipologiaS=$_GET['tipologia'];
     $Qtipologia=' tipologia='.$tipologiaS.' AND ';
-    $testotipologia='tipologia='.$tipologiaS.', ';
+    if($tipologiaS==0){
+    $testotipologia='tipologia=MOUNTAIN, ';}
+    else{$testotipologia='tipologia=CORSA, ';}
 }
 if(isset($_GET['difficolta'])){
     $difficoltaS=$_GET['difficolta'];
     $Qdifficolta=' difficolta='.$difficoltaS.' AND ';
-    $testodifficolta='difficolta='.$difficoltaS.', ';
+    if($difficoltaS==1){
+    $testodifficolta='difficolta=FACILE, ';}
+    else if($difficoltaS==2){
+        $testodifficolta='difficolta=MEDIA, ';
+    }else{
+        $testodifficolta='difficolta=DIFFICILE, ';
+    }
 }
 if(isset($_GET['distanza'])){
     $distanzaS=$_GET['distanza'];
@@ -32,7 +40,7 @@ $testofiltro="$testotipologia $testodifficolta $testodistanza";
 
 if(inserisciFiltroUscite($nickname,$filtroQuery,$testofiltro,$mysqli)==true){
 
-    header("location: /visualizzaUscite.php");
+    header("location: ./visualizzaUscite.php");
 }else{
     echo 'errore';
 }

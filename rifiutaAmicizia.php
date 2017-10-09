@@ -17,9 +17,9 @@ if(isset($_GET['rifiuta'])) {
     echo "ok fino qui tutto bene";
     if(rifiutaAmicizia($utente,$nickname,$mysqli) == true) {
         // Login eseguito
-        header("location: /visualizzaRichieste.php");
+        header("location: ./visualizzaRichieste.php");
     } else {
-        echo 'pollo';
+        echo 'problemi database';
 
 
         // Login fallito

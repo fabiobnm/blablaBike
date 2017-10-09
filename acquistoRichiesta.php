@@ -9,34 +9,27 @@ if(isset($_SESSION['nikname'], $_GET['IDannuncio'])) {
     $utente = $_SESSION['nikname'];
     $annuncio = $_GET['IDannuncio'];
 
+    echo $utente;
+    echo $annuncio;
+
     echo "ok fino qui tutto bene";
-    if(acquistoRichiesta($annuncio,$utente,$mysqli) == true) {
 
-        // Login eseguito
-        header("location: /utente.php?messaggio=richiesta aquisto inviata");
-    } else {
-        echo 'pollo';
+    $query="INSERT INTO richiestaacquisto (annuncio,utente)VALUES($annuncio,'$utente')";
+    $mysqli->query($query)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
 
+    header("location: ./utente.php?messaggio=richiesta aquisto inviata");
 
-        // Login fallito
-        //header('Location: ./login.php?error=1');
-    }
 } else {
     $utente = 'ANONYMOUS';
     $annuncio = $_GET['IDannuncio'];
 
-    echo "ok fino qui tutto bene";
-    if(acquistoRichiesta($annuncio,$utente,$mysqli) == true) {
 
-        // Login eseguito
-        header("location: /mercatino.php?messaggio=richiesta aquisto inviata");
-    } else {
-        echo 'pollo';
+    $query="INSERT INTO richiestaacquisto (annuncio,utente)VALUES($annuncio,$utente)";
+    $mysqli->query($query)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
 
+    header("location: ./utente.php?messaggio=richiesta aquisto inviata");
 
-        // Login fallito
-        //header('Location: ./login.php?error=1');
-    }
-    // Le variabili corrette non sono state inviate a questa pagina dal metodo POST.
-    echo 'Invalid Request';
-}
+   }
+   

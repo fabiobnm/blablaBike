@@ -7,7 +7,10 @@ if(login_check($mysqli) == true) {
 
     $nickname=$_SESSION['nikname'];
     $query="SELECT utente FROM segue WHERE seguitoDa = '$nickname'&& approvato=0";
+    $mysqli->query($query)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $result=mysqli_query($mysqli,$query);
+
 
     echo '<h3>richieste amicizia</h3><br>';
     while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
@@ -30,3 +33,8 @@ if(login_check($mysqli) == true) {
     }
 
 }
+?>
+</div>
+</body>
+</html>
+

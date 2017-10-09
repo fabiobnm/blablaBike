@@ -12,19 +12,15 @@ if(isset($_SESSION['nikname'], $_GET['profilo'])) {
     $utente = $_SESSION['nikname'];
     $seguitoDa = $_GET['profilo'];
 
+    $query="UPDATE segue SET approvato = 1, data= CURRENT_DATE 
+     WHERE utente='$seguitoDa' && seguitoDa='$utente'";
+    $mysqli->query($query)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
 
-
-    echo "ok fino qui tutto bene";
-    if(accettaRichiesta($utente,$seguitoDa,$mysqli) == true) {
+   /* if(accettaRichiesta($utente,$seguitoDa,$mysqli) == true) {
         // Login eseguito
-        header("location: /visualizzaRichieste.php");
-    } else {
-        echo 'pollo';
+      */  header("location: ./visualizzaRichieste.php");
 
-
-        // Login fallito
-        //header('Location: ./login.php?error=1');
-    }
 } else {
     // Le variabili corrette non sono state inviate a questa pagina dal metodo POST.
     echo 'Invalid Request';

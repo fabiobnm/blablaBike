@@ -18,9 +18,9 @@ if(login_check($mysqli) == true) {
 
     if(fineUscita($uscita,$utente,$mysqli) == true) {
         // Login eseguito
-        header("location: /utente.php?messaggio=uscita terminata");
+        header("location: ./usciteACuiPartecipi.php?messaggio=uscita terminata");
     }  } else {
-        echo 'pollo';
+        echo 'problemi database';
 
 
         // Login fallito

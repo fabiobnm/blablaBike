@@ -15,9 +15,9 @@ if(isset($_SESSION['nikname'],$_GET['ID'])) {
     echo "ok fino qui tutto bene";
     if(eliminaBike($utente,$bike,$mysqli) == true) {
         // Login eseguito
-        header("location: /garage.php?messaggio=hai cancellato");
+        header("location: ./garage.php?messaggio=bike cancellata");
     } else {
-        header("location: /garage.php?messaggio=errore");
+        header("location: ./garage.php?messaggio=errore");
 
 
         // Login fallito

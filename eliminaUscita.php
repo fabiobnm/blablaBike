@@ -15,9 +15,9 @@ if(isset($_SESSION['nikname'],$_GET['ID'])) {
     echo "ok fino qui tutto benerererere";
     if(eliminaUSCITA($utente,$uscita,$mysqli) == true) {
         // Login eseguito
-        header("location: /profilo.php?messaggio=hai cancellato un'Uscita");
+        header("location: ./profilo.php?messaggio=hai cancellato un'Uscita");
     } else {
-        echo 'pollo';
+        echo 'errore inserimente';
 
 
         // Login fallito

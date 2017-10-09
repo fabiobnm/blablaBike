@@ -5,18 +5,23 @@ include 'header.php';
 ?>
 <div class="row">
     <div class="col-sm-6 col-md-4">
-        <div class="thumbnail"style="border-radius: 30px">
-<form action="process_login.php" method="post" style="margin-left: 80px; margin-top: 10px">
+        <div class="thumbnail rad30">
+<form action="process_login.php" method="post" class="login">
+    <?php if(isset($_GET['email'])) {
+        $email=$_GET['email'];?>
+        <input type="email" name="email" value="<?php echo $email?>" required><br><br>
+    <?php }else{?>
     email<br>
     <input type="email" name="email" required><br><br>
+<?php }?>
     Password<br>
     <input type="password" name="password" required><br>
     <br>
-    <input style="background: lemonchiffon" type="submit" value="ACCEDI">
+    <input class="sublog" type="submit" value="ACCEDI">
 
   <br>
     <br>
-    <a href="signin.php" style="text-align: center">vuoi iscriverti? singin</a>
+    <a href="signin.php" class="center">vuoi iscriverti? singin</a>
    </form>
 
         </div>
@@ -31,6 +36,10 @@ include 'header.php';
     $messaggio = $_GET['messaggio'];
     echo " <h1>$messaggio</h1>" ;
 }?>
+
+</div>
+</body>
+</html>
 
 
 

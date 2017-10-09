@@ -15,9 +15,9 @@ if(isset($_SESSION['nikname'],$_GET['IDannuncio'])) {
     echo "ok fino qui tutto bene";
     if(cancellaAnnuncio($utente,$annuncio,$mysqli) == true) {
         // Login eseguito
-        header("location: /mercatino.php?messaggio=hai cancellato");
+        header("location: ./mercatino.php?messaggio=hai cancellato");
     } else {
-        echo 'pollo';
+        echo 'errore inserimento';
 
 
         // Login fallito

@@ -70,7 +70,15 @@ function rifiutaAcquisto($annuncio,$utente,$mysqli){
     return true;
 
 }
-function cancellaAnnuncio($utente,$annuncio,$mysqli){
+function cancellapartecipa($ID,$mysqli){
+
+    $stmt = $mysqli->prepare("DELETE FROM partecipa WHERE  bicicletta=$ID ");
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+}
+function cancellaAnnuncio($annuncio,$mysqli){
 
     $stmt = $mysqli->prepare("DELETE FROM  annuncio WHERE  IDannuncio='$annuncio' ");
     $stmt->execute();
@@ -84,6 +92,21 @@ function eliminaUSCITA($utente,$uscita,$mysqli){
     $stmt->execute();
     $stmt->close();
     return true;
+
+
+}
+function eliminutente($utente,$mysqli){
+
+    $stmt = $mysqli->prepare("DELETE FROM  utente WHERE nickname='$utente'");
+
+    if ( $stmt->execute() ){
+        $stmt->close();
+        return true;
+    }else{
+        $stmt->close();
+        return false;
+    }
+
 
 
 }
@@ -153,9 +176,19 @@ function valutaUscita($uscita,$utente,$valutazione,$mysqli){
 
 
 }
-function updatebike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+function updatebikecorsa($proprietario,$nome,$tipo,$marca,$modello,$peso,$annoFab,$annoAcq,$colore,$mysqli){
 
     $stmt = $mysqli->prepare("UPDATE bicicletta SET tipo='$tipo',marca='$marca',modello='$modello',peso='$peso',ruote='$ruote',
+      annoFab='$annoFab',annoAcq='$annoAcq',colore='$colore'
+      WHERE nome='$nome' AND proprietario='$proprietario'");
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+}
+function updatebike($proprietario,$nome,$tipo,$marca,$modello,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE bicicletta SET tipo='$tipo',marca='$marca',modello='$modello',ruote='$ruote',
       annoFab='$annoFab',annoAcq='$annoAcq',colore='$colore'
       WHERE nome='$nome' AND proprietario='$proprietario'");
 
@@ -173,6 +206,18 @@ function pubblicaUscita($nickname,$uscita,$mysqli){
     $stmt->execute();
     $stmt->close();
     return true;
+}
+function cambiaprop($ACQ,$bike,$anno,$mysqli){
+
+    $stmt = $mysqli->prepare("UPDATE bicicletta SET proprietario='$ACQ',annoAcq=$anno
+    WHERE ID='$bike'");
+    //$stmt->bind_param('s', $_SESSION['nickname']);
+
+    $stmt->execute();
+    $stmt->close();
+    return true;
+
+
 }
 
 
@@ -278,11 +323,11 @@ function filtraMercatino($nickname,$tipo,$marca,$colore,$annoFabmin,$annoFabmax,
     return true;
 
 }
-function bikeVenduta($proprietario,$ID,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$mysqli){
+function bikeVenduta($proprietario,$ID,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$ACQ,$PREZ,$mysqli){
 
-    $stmt = $mysqli->prepare("INSERT INTO biciclettevendute (proprietario,ID,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,
-     colore)VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param('sisissdisss',$proprietario,$ID,$nome, $tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore);
+    $stmt = $mysqli->prepare("INSERT INTO biciclettevendute(proprietario,ID,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,colore,acquirente,prezzo)
+         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param('sisissdissssi',$proprietario,$ID,$nome,$tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore,$ACQ,$PREZ);
 
     $stmt->execute();
     $stmt->close();
@@ -296,6 +341,7 @@ function insertbike($proprietario,$nome,$tipo,$marca,$modello,$peso,$ruote,$anno
     $stmt = $mysqli->prepare("INSERT INTO bicicletta (proprietario,nome,tipo,marca,modello,peso,ruote,annoFab,annoAcq,
      colore)VALUES(?,?,?,?,?,?,?,?,?,?)");
     $stmt->bind_param('ssissdisss',$proprietario,$nome, $tipo,$marca,$modello,$peso,$ruote,$annoFab,$annoAcq,$colore);
+
 
     $stmt->execute();
     $stmt->close();

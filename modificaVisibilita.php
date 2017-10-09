@@ -16,10 +16,10 @@ if(isset($_POST['uscita'], $_POST['visibile'])){
     echo "ok fino qui tutto bene";
     if(modificaVisibilita($uscita,$visibile,$organizzatore,$mysqli) == true) {
 
-        header("location: /profilo.php?messaggio=hai modificato un'usicta");
+        header("location: ./profilo.php?messaggio=hai modificato un'usicta");
 
     } else {
-        echo 'pollo';
+        echo 'errore inserimento';
 
 
         // Login fallito

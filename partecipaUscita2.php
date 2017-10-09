@@ -18,10 +18,10 @@ sec_session_start(); // usiamo la nostra funzione per avviare una sessione php s
 echo $partecipante,$bicicletta,$uscita;
     if(partecipaUscita($partecipante,$bicicletta,$uscita,$mysqli) == true) {
         // Login eseguito
-        header("location: /usciteACuiPartecipi.php?messaggio=ti sei iscritto all'uscita");
+        header("location: ./usciteACuiPartecipi.php?messaggio=ti sei iscritto all'uscita");
         echo $partecipante,$bicicletta,$uscita;
     } else {
-        echo 'pollo';
+        echo 'errore inserimento';
 
 
         // Login fallito

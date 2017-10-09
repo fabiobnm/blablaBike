@@ -13,13 +13,19 @@ if(isset($_POST['uscita'], $_POST['valutazione'])) {
     $valutazione = $_POST['valutazione'];
     $usicta = $_POST['uscita'];// Recupero la password criptata.
 
+    if (empty($_POST['valutazione'])or($_POST['valutazione']<1)or ($_POST['valutazione']>10)){
+        header("location: ./usciteACuiPartecipi.php?messaggio0=inserisci valutazione");
+    }else{
+        if (empty($_POST['uscita'])){
+            header("location: ./creauscita.php?messaggio1=numero uscita non presente");
+        }else
 
 
     echo "ok fino qui tutto bene";
 
     if(valutaUscita($usicta,$utente,$valutazione,$mysqli) == true) {
         // Login eseguito
-        header("location: /utente.php?messaggio=hai inserito valutazione");
+        header("location: ./utente.php?messaggio=hai inserito valutazione");
     } else {
         echo 'pollo';
 
@@ -27,7 +33,7 @@ if(isset($_POST['uscita'], $_POST['valutazione'])) {
         // Login fallito
         //header('Location: ./login.php?error=1');
     }
-} else {
+}} else {
     // Le variabili corrette non sono state inviate a questa pagina dal metodo POST.
     echo 'Invalid Request';
 }

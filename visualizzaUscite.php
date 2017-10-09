@@ -2,7 +2,7 @@
 include 'header.php';
 
 ?>
-    <body style="background: springgreen"></body>
+
 <?php
 
 sec_session_start();
@@ -14,6 +14,8 @@ if(login_check($mysqli) == true) {
            (dataIncontro BETWEEN DATE_SUB(CURRENT_DATE,INTERVAL 1 month) AND CURRENT_DATE) group by organizzatore 
            HAVING COUNT(*)>=ALL(SELECT COUNT(*)FROM uscita WHERE difficolta=2 AND visibile=0 AND 
            (dataIncontro BETWEEN DATE_SUB(CURRENT_DATE,INTERVAL 1 month) AND CURRENT_DATE)GROUP by organizzatore)";
+    $mysqli->query($best)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $risultatobest=mysqli_query($mysqli, $best);
     $bestorganizzatore=mysqli_fetch_array($risultatobest,MYSQLI_ASSOC);
     $nomeorg=$bestorganizzatore['organizzatore'];
@@ -29,6 +31,8 @@ if(login_check($mysqli) == true) {
     $part="SELECT utente,COUNT(DISTINCT bicicletta) from partecipa join uscita ON uscita.ID=partecipa.uscita
      WHERE uscita.visibile=0 GROUP BY partecipa.utente HAVING COUNT(DISTINCT bicicletta)=
      (SELECT COUNT(*) from bicicletta WHERE bicicletta.proprietario=partecipa.utente group BY bicicletta.proprietario)";
+    $mysqli->query($part)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $risultatopart=mysqli_query($mysqli, $part);
     while ($parecipantibest=mysqli_fetch_array($risultatopart,MYSQLI_ASSOC)){?>
         <a href="profilo.php?profilo=<?php echo $parecipantibest['utente'];?>"><?php echo $parecipantibest['utente'];?></a>;<?php
@@ -36,10 +40,11 @@ if(login_check($mysqli) == true) {
         }
       ?>
 
-   <br> <a href="creauscita.php" style="text-align: center;font-weight: bolder" >Crea una nuova Uscita</a><br>
+   <br> <a href="creauscita.php" class="center">Crea una nuova Uscita</a><br>
            <br>
+
     <form action="filtraUscite.php" method="get">
-           <div class="thumbnail" style="border-radius: 30px; background-color:white;width: 600px">
+           <div class="thumbnail usciteth">
     <label> filtra uscite </label>
 
 
@@ -50,7 +55,7 @@ if(login_check($mysqli) == true) {
     </select>
 
     <select name="difficolta" >
-        <option value="" disabled selected>difficoltà</option>
+        <option value="" disabled selected>difficolta</option>
         <option value=1  >facile</option>
         <option value=2 >media</option>
         <option value=3 >difficile</option>
@@ -64,10 +69,11 @@ if(login_check($mysqli) == true) {
         <option value=100 >100</option>
         <option value=150 >150</option>
     </select>
-           <input style="background: lemonchiffon;border-radius: 30px" type="submit"value="CERCA">
-               <input style="background: orangered;border-radius: 30px" type="submit"value="elimina filtri">
-       </form>
-    </div>
+           <input class="sublog" type="submit" value="CERCA">
+               <input class="sublog orange" type="submit" value="elimina filtri">
+           </div>
+    </form>
+
 
 
 
@@ -76,6 +82,8 @@ if(login_check($mysqli) == true) {
 
     <?php
     $prova="select query ,testo from filtrouscite where nickname='$nickname'";
+    $mysqli->query($prova)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $risultatoprova=mysqli_query($mysqli, $prova);
     $provaprova=mysqli_fetch_array($risultatoprova,MYSQLI_ASSOC);
     $definitiva=$provaprova['query'];
@@ -85,13 +93,15 @@ if(login_check($mysqli) == true) {
     else{
         echo "<h3>filtro inserito:$testo</h3>";}
 
-    ?> <h1 style="text-align: center">USCITE</h1><?php
+    ?> <h1 class="center">Uscite</h1><?php
 
 
     $queryVis = "SELECT * FROM `uscita` WHERE nascosto=1 AND $definitiva  ID NOT in (SELECT ID from uscita where fine = 1) 
         AND( organizzatore='$nickname' OR visibile=0 or (organizzatore IN(SELECT seguitoDa FROM segue WHERE utente='$nickname'AND
             approvato=1)OR organizzatore IN(SELECT utente FROM segue WHERE seguitoDa='$nickname'AND approvato=1)))
              ORDER BY dataIncontro ";
+    $mysqli->query($queryVis)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
             $resultVis = mysqli_query($mysqli, $queryVis);
 
             while ($rowVis = mysqli_fetch_array($resultVis, MYSQLI_ASSOC)) {
@@ -101,24 +111,31 @@ if(login_check($mysqli) == true) {
             ?>
             <div class=" ">
                 <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail" style="border-radius: 80px; background-color: white; height: 588px">
+                    <div class="thumbnail rad80 uscitethumb">
 
-                        <img style="border-radius: 80px; width: 400px;height: 200px" <?php if ($rowVis['tipologia'] == 0){ ?>src="img/uscitaMount%202.jpg"<?php } else ?> src="img/uscitaCorsa%202.jpg"
-                             alt="vvvv">
+                        <?php if ($rowVis['tipologia'] == 0){ ?>
+                            <img class="usciteimm" src="img/uscitaMount%202.jpg"
+                                 alt="vvvv"><?php }?>
+
+                        <?php if ($rowVis['tipologia'] == 1){ ?>
+                            <img class="usciteimm" src="img/uscitaCorsa%202.jpg"
+                                 alt="vvvv"><?php }?>
+
+
                         <div class="caption">
-                            <h3 style="text-align: center"><?php echo $rowVis["titolo"]; ?></h3>
-                            <p style="text-align: center">é un'uscita per Bike da <?php if ($rowVis["tipologia"] == 0) {
+                            <h3 class="center"><?php echo $rowVis["titolo"]; ?></h3>
+                            <p class="center">un'uscita per Bike da <?php if ($rowVis["tipologia"] == 0) {
                                     echo 'mountain';
                                 } else {
                                     echo 'corsa';
-                                } ?>, di livello <?php echo $rowVis["difficolta"]; ?> <br>
+                                } ?>,<br> di livello <?php echo $rowVis["difficolta"]; ?> <br>
                                 organizata da <?php echo $rowVis["organizzatore"]; ?><br> pedaleremo per <?php echo $rowVis["distanza"]; ?> km, con un
                                 dislivello di <?php echo $rowVis["dislivello"]; ?>m.<br>
                                 L'incontro si terra il <?php echo $rowVis["dataIncontro"]; ?><br> a <?php echo $rowVis["luogo"]; ?><br> alle <?php echo $rowVis["oraIncontro"]; ?>
                               </p>
-                            <p style="color: #4CAF50; text-align: center">NOTE: <?php echo $rowVis["note"]; ?></p>
+                            <p class="center" style="color: #4CAF50">NOTE: <?php echo $rowVis["note"]; ?></p>
 
-                 <p style="text-align: center">         <?php
+                 <p class="center">         <?php
                             $uscita=$rowVis['ID'];
 
                             if($rowVis['visibile']==0){
@@ -128,22 +145,27 @@ if(login_check($mysqli) == true) {
                                 echo 'uscita PRIVATA';
                             } ?>
                  </p>
-                            <p><a style="color: green; width: 100%" href="tappe.php?uscita=<?php echo $uscita;?>" class="btn btn-primary"
+                            <p><a class="btn btn-primary visTap" href="tappe.php?uscita=<?php echo $uscita;?>"
                                   role="button">VISUALIZZA TAPPE</a>
                             </p>
         <?php
           $uscita=$rowVis['ID'];
           $queryConto = "SELECT COUNT(*) as conto FROM partecipa WHERE uscita =$uscita";
+        $mysqli->query($queryConto)
+        or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
           $resultConto = mysqli_query($mysqli, $queryConto);
           $rowConto = mysqli_fetch_array($resultConto, MYSQLI_ASSOC);
         ?>
-                            <p style="text-align: center; color: green; font-weight: bolder">
+                            <p class="center" style="color: green;">
                                 all'uscita sono iscritti <?php echo $rowConto["conto"]; ?> utenti
                             </p>
 
             <?php
 
-          $queryPartecipa = "SELECT * FROM partecipa WHERE utente='$nickname'&& uscita =$uscita";
+          $queryPartecipa = "SELECT * FROM partecipa JOIN bicicletta ON bicicletta.ID=partecipa.bicicletta
+                             WHERE utente='$nickname'&& uscita =$uscita";
+            $mysqli->query($queryPartecipa)
+            or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
           $resultPartecipa = mysqli_query($mysqli, $queryPartecipa);
           $rowPartecipa = mysqli_fetch_array($resultPartecipa, MYSQLI_ASSOC);
 
@@ -151,16 +173,15 @@ if(login_check($mysqli) == true) {
 
 
               ?>
-              <a style="width: 300px; border-bottom-left-radius: 80px;
-                              border-bottom-right-radius: 80px; margin-left: 11px" class="btn btn-primary" role="button" >sei già ISCRITTO</a>
+              <p><a class="btn btn-primary tastoBassoUscite" style="color: red" role="button" >ISCRITTO con <?php echo $rowPartecipa['nome']?></a>
 
               <?php
 
             }else{
 
           ?>
-                            <p><a style="width: 300px;;border-bottom-left-radius: 80px;
-                              border-bottom-right-radius: 80px;margin-left: 11px " href="interno.php?ID=<?php echo $rowVis['ID'];?>&tipologia=<?php echo $rowVis['tipologia']; ?>" class="btn btn-primary" role="button">PARTECIPA!</a>
+                            <p><a class="btn btn-primary tastoBassoUscite"
+                               href="interno.php?ID=<?php echo $rowVis['ID'];?>&tipologia=<?php echo $rowVis['tipologia']; ?>" role="button">PARTECIPA!</a>
                                 <?php
 
                                 }     ?>
@@ -177,7 +198,10 @@ if(login_check($mysqli) == true) {
 //}
 else {
 
-    echo accedi;?>  <a href="login.php">Login</a><?php
+    echo "accedi";?>  <a href="login.php">Login</a><?php
 }
 
-
+?>
+</div>
+</body>
+</html>

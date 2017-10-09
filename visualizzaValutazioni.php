@@ -2,7 +2,6 @@
 include 'header.php';
 
 ?>
-    <body style="background: springgreen"></body>
 <?php
 
 sec_session_start();
@@ -12,6 +11,8 @@ if(login_check($mysqli) == true) {
     $uscita=$_GET['uscita'];
 
     $queryOrg = "SELECT COUNT(*) as conto FROM uscita WHERE ID=$uscita AND organizzatore='$nickname'";
+    $mysqli->query($queryOrg)
+    or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $resultOrg = mysqli_query($mysqli, $queryOrg);
     $rowOrg = mysqli_fetch_array($resultOrg, MYSQLI_ASSOC);
 
@@ -26,6 +27,8 @@ if(login_check($mysqli) == true) {
 
     $queryVoto = "SELECT * from partecipa where uscita=$uscita && valutazione IN 
      (SELECT valutazione FROM partecipa WHERE valutazione BETWEEN 1 and 10)";
+        $mysqli->query($queryVoto)
+        or die("Impossibile eseguire query. <br> Codice errore ". $mysqli->errno .": ". $mysqli->error ."<br>");
     $resultVoto = mysqli_query($mysqli, $queryVoto);
 
 
@@ -40,11 +43,11 @@ if(login_check($mysqli) == true) {
         ?>
         <div class=" ">
             <div class="col-sm-6 col-md-4">
-                <div class="thumbnail" style="border-radius: 30px">
+                <div class="thumbnail rad30">
 
                     <div class="caption">
-                        <h3 style="text-align: center"><?php echo $rowVoto["utente"]; ?></h3>
-                        <p style="text-align: center">ha dato una valutazione di <?php echo $valutazione; ?>
+                        <h3 class="center"><?php echo $rowVoto["utente"]; ?></h3>
+                        <p class="center">ha dato una valutazione di <?php echo $valutazione; ?>
                         </p>
 
 
@@ -60,6 +63,12 @@ if(login_check($mysqli) == true) {
 else echo '<h2 style="color: red">Uscita non trovata</h2>';}
 else {
 
-    echo accedi;?>  <a href="login.php">Login</a><?php
+    echo 'accedi';?>  <a href="login.php">Login</a><?php
 }
+
+?>
+</div>
+</body>
+</html>
+
 

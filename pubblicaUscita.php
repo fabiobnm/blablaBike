@@ -11,7 +11,7 @@ $uscita=$_GET['uscita'];
 
 if(pubblicaUscita($nickname,$uscita,$mysqli) == true) {
     // Login eseguito
-    header("location: /visualizzaUscite.php?messaggio=nuova uscita creata");
+    header("location: ./visualizzaUscite.php?messaggio=nuova uscita creata");
 
 } else {
     echo 'pollo';

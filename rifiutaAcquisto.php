@@ -15,9 +15,9 @@ if(isset($_GET['annuncio'],$_GET['utente'])) {
     echo "ok fino qui tutto bene";
     if(rifiutaAcquisto ($annuncio,$utente,$mysqli) == true) {
         // Login eseguito
-        header("location: /visualAcquRic.php?messaggio=hai cancellato");
+        header("location: ./visualAcquRic.php?messaggio=hai cancellato");
     } else {
-        echo 'pollo';
+        echo 'problemi database';
 
 
         // Login fallito

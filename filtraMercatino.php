@@ -13,7 +13,9 @@ sec_session_start(); // usiamo la nostra funzione per avviare una sessione php s
 if(isset($_GET['tipo'])){
     $tipoS=$_GET['tipo'];
     $Qtipo=' tipo='.$tipoS.' AND ';
-    $testotipo='tipo='.$tipoS.', ';
+    if($tipoS==0){
+    $testotipo='tipo=MOUNTAIN, ';}
+    else{$testotipo='tipo=CORSA, ';}
 }
 if(isset($_GET['marca'])){
     $marcaS=$_GET['marca'];
@@ -41,7 +43,7 @@ $testofiltro="$testotipo $testomarca $testocolore $testoannomin $testoannomax";
 
 if(inserisciFiltroMercatino($nickname,$filtroQuery,$testofiltro,$mysqli)==true){
 
-    header("location: /mercatino.php");
+    header("location: ./mercatino.php");
 }else{
     echo 'errore';
 }
